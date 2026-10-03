@@ -1,0 +1,34 @@
+# Local environment / secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+
+# Dependencies / build output
+node_modules/
+coverage/
+artifacts/
+cache/
+dist/
+build/
+.expo/
+
+# Runtime demo data (fixtures live under fixtures/demo/)
+public-demo/data/*.jsonl
+public-demo/data/*.log
+!public-demo/data/.gitkeep
+
+# Python / editor / OS cache
+__pycache__/
+*.py[cod]
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# Local test output
+tests/.demo.log
+*.tmp

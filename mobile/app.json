@@ -1,0 +1,12 @@
+{
+  "expo": {
+    "name": "ReserveChain",
+    "slug": "reservechain",
+    "scheme": "reservechain",
+    "version": "0.2.0",
+    "orientation": "portrait",
+    "ios": {"bundleIdentifier":"io.reservechain.mobile","supportsTablet":true},
+    "android": {"package":"io.reservechain.mobile"},
+    "plugins": ["expo-secure-store"]
+  }
+}

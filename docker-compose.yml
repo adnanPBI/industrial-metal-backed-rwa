@@ -1,0 +1,59 @@
+services:
+  db:
+    image: mariadb:11.4
+    environment:
+      MARIADB_DATABASE: ${WP_DB_NAME:-reservechain}
+      MARIADB_USER: ${WP_DB_USER:-reservechain}
+      MARIADB_PASSWORD: ${WP_DB_PASSWORD:-reservechain-dev-only}
+      MARIADB_ROOT_PASSWORD: ${WP_DB_ROOT_PASSWORD:-root-dev-only}
+    volumes:
+      - db_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+  wordpress:
+    image: wordpress:6.8-php8.3-apache
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "${WP_PORT:-8080}:80"
+    environment:
+      WORDPRESS_DB_HOST: db:3306
+      WORDPRESS_DB_NAME: ${WP_DB_NAME:-reservechain}
+      WORDPRESS_DB_USER: ${WP_DB_USER:-reservechain}
+      WORDPRESS_DB_PASSWORD: ${WP_DB_PASSWORD:-reservechain-dev-only}
+      WORDPRESS_DEBUG: ${WP_DEBUG:-1}
+      RC_DEV_MAILPIT: "1"
+    volumes:
+      - wp_data:/var/www/html
+      - ./wordpress/wp-content/themes/reservechain:/var/www/html/wp-content/themes/reservechain:ro
+      - ./wordpress/wp-content/plugins/reservechain-core:/var/www/html/wp-content/plugins/reservechain-core:ro
+      - ./wordpress/wp-content/mu-plugins:/var/www/html/wp-content/mu-plugins:ro
+  wpcli:
+    image: wordpress:cli-php8.3
+    depends_on:
+      db:
+        condition: service_healthy
+      wordpress:
+        condition: service_started
+    user: "33:33"
+    environment:
+      WORDPRESS_DB_HOST: db:3306
+      WORDPRESS_DB_NAME: ${WP_DB_NAME:-reservechain}
+      WORDPRESS_DB_USER: ${WP_DB_USER:-reservechain}
+      WORDPRESS_DB_PASSWORD: ${WP_DB_PASSWORD:-reservechain-dev-only}
+    volumes:
+      - wp_data:/var/www/html
+      - ./wordpress/wp-content/themes/reservechain:/var/www/html/wp-content/themes/reservechain:ro
+      - ./wordpress/wp-content/plugins/reservechain-core:/var/www/html/wp-content/plugins/reservechain-core:ro
+      - ./wordpress/wp-content/mu-plugins:/var/www/html/wp-content/mu-plugins:ro
+  mailpit:
+    image: axllent/mailpit:latest
+    ports:
+      - "${MAILPIT_UI_PORT:-8025}:8025"
+volumes:
+  db_data:
+  wp_data:

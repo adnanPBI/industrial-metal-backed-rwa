@@ -1,0 +1,11 @@
+{
+  "fixture_type": "ILLUSTRATIVE / DEMO DATA",
+  "mode": "pre-launch",
+  "publication_status": "inactive",
+  "issued_token_supply": null,
+  "eligible_physical_reserve_quantity": null,
+  "reserve_coverage_ratio": null,
+  "valuation_date": null,
+  "attestation_date": null,
+  "message": "No live reserve claim published. Reserve quantities, coverage and attestation fields remain unavailable until approved source records and publication authorization are supplied."
+}

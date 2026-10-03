@@ -1,0 +1,25 @@
+{
+  "fixture_type": "ILLUSTRATIVE / DEMO DATA",
+  "passports": [
+    {
+      "passport_id": "RC-DAP-CU-03K07-DEMO",
+      "program_id": "RC-PROG-CU-001",
+      "lot": "#03-K-07",
+      "verification_state": "Evidence supplied; publication review required",
+      "custody_state": "Pending owner-approved documentation",
+      "reserve_state": "No live reserve claim published",
+      "tokenization_state": "Not issued",
+      "redemption_state": "Inactive / pre-launch"
+    },
+    {
+      "passport_id": "RC-DAP-NI-120NP1-DEMO",
+      "program_id": "RC-PROG-NI-001",
+      "lot": "120/NP1",
+      "verification_state": "Evidence supplied; publication review required",
+      "custody_state": "Pending owner-approved documentation",
+      "reserve_state": "No live reserve claim published",
+      "tokenization_state": "Not issued",
+      "redemption_state": "Inactive / pre-launch"
+    }
+  ]
+}

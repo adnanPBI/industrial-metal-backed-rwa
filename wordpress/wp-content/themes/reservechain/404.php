@@ -1,0 +1,1 @@
+<?php get_header(); ?><main id="main"><section class="rc-pagehero"><div class="rc-narrow"><div class="rc-eyebrow">404</div><h1>Page not found.</h1><p>The requested route is not part of the current ReserveChain sitemap.</p><a class="rc-btn rc-btn-primary" href="<?php echo esc_url(home_url('/')); ?>">Return home</a></div></section></main><?php get_footer(); ?>

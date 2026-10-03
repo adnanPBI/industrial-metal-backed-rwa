@@ -1,0 +1,29 @@
+{
+  "fixture_type": "ILLUSTRATIVE / DEMO DATA",
+  "records": [
+    {
+      "first_name": "Avery",
+      "last_name": "Example",
+      "email": "avery@example.com",
+      "country": "Switzerland",
+      "participant_type": "Institution",
+      "material_interest": "Both",
+      "status": "verified-demo",
+      "consent_updates": true,
+      "privacy_ack": true,
+      "no_offer_ack": true
+    },
+    {
+      "first_name": "Jordan",
+      "last_name": "Sample",
+      "email": "jordan@example.com",
+      "country": "United Kingdom",
+      "participant_type": "Industrial buyer",
+      "material_interest": "Nickel Wire",
+      "status": "pending-demo",
+      "consent_updates": true,
+      "privacy_ack": true,
+      "no_offer_ack": true
+    }
+  ]
+}

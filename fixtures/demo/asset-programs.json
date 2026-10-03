@@ -1,0 +1,40 @@
+{
+  "fixture_type": "ILLUSTRATIVE / DEMO DATA",
+  "programs": [
+    {
+      "program_id": "RC-PROG-CU-001",
+      "slug": "copper-powder",
+      "name": "Ultrafine Copper Powder",
+      "material": "Copper",
+      "form": "Ultrafine powder",
+      "status": "PRE-LAUNCH / EVIDENCE REVIEW",
+      "purity": "99.9999%",
+      "lot": "#03-K-07",
+      "certificate_no": "0004512",
+      "certificate_date": "04.07.2022",
+      "laboratory": "IGAS research",
+      "custody_status": "Pending owner-approved documentation",
+      "reserve_status": "No live reserve claim published",
+      "tokenization_status": "Not issued",
+      "passport_id": "RC-DAP-CU-03K07-DEMO"
+    },
+    {
+      "program_id": "RC-PROG-NI-001",
+      "slug": "nickel-wire",
+      "name": "Ultrafine Nickel Wire 0.025 mm",
+      "material": "Nickel",
+      "form": "Wire",
+      "status": "PRE-LAUNCH / EVIDENCE REVIEW",
+      "purity": "99.9807%",
+      "diameter": "0.025 mm",
+      "lot": "120/NP1",
+      "certificate_no": "0004368",
+      "certificate_date": "19.10.2021",
+      "laboratory": "IGAS research",
+      "custody_status": "Pending owner-approved documentation",
+      "reserve_status": "No live reserve claim published",
+      "tokenization_status": "Not issued",
+      "passport_id": "RC-DAP-NI-120NP1-DEMO"
+    }
+  ]
+}
