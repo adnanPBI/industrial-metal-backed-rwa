@@ -1,0 +1,58 @@
+name: Expand ReserveChain source bundle
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.bootstrap/**'
+      - '.github/workflows/bootstrap-source.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  expand-and-verify:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Reconstruct source archive
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -n "$(find .bootstrap -maxdepth 1 -name 'chunk-*' -print -quit)"
+          cat .bootstrap/chunk-* > /tmp/reservechain-source.b64
+          base64 --decode /tmp/reservechain-source.b64 > /tmp/reservechain-source.tar.gz
+          tar -xzf /tmp/reservechain-source.tar.gz -C .
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+      - name: Validate reconstructed solution
+        run: bash scripts/validate-package.sh
+      - name: Return repository to source-only state
+        shell: bash
+        run: |
+          rm -f docs/site-data.json
+          rm -f public-demo/public/assets/js/site-data.js
+          rm -f wordpress/wp-content/plugins/reservechain-core/includes/page-definitions.php
+          rm -f tests/.demo.log
+          rm -f public-demo/data/*.jsonl public-demo/data/*.log
+          rm -rf .bootstrap
+      - name: Commit complete source tree
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'ReserveChain Build Bot'
+          git config user.email 'github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git diff --cached --quiet && exit 0
+          git commit -m 'feat: add complete ReserveChain end-to-end solution'
+          git push origin HEAD:main
