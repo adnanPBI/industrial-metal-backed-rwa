@@ -45,6 +45,8 @@ jobs:
           rm -f wordpress/wp-content/plugins/reservechain-core/includes/page-definitions.php
           rm -f tests/.demo.log
           rm -f public-demo/data/*.jsonl public-demo/data/*.log
+          # This workflow's token cannot create another workflow file; add ci.yml separately via the GitHub connector after expansion.
+          rm -f .github/workflows/ci.yml
           rm -rf .bootstrap
       - name: Commit complete source tree
         shell: bash
