@@ -1,0 +1,15 @@
+{
+  "name": "reservechain-vercel-demo",
+  "version": "0.2.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "python3 scripts/generate_site_data.py && node scripts/prepare_vercel.mjs"
+  },
+  "dependencies": {
+    "@vercel/blob": "^2.0.0"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}
