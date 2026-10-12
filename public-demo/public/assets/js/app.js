@@ -29,10 +29,11 @@
     return `<header class="site-header">
       <div class="top-disclosure"><div class="container"><span class="dot"></span><span>PRE-LAUNCH PLATFORM - NO TOKENS ARE BEING OFFERED OR SOLD THROUGH THIS WEBSITE.</span></div></div>
       <div class="container nav-wrap">
-        <a class="brand" href="/"><img src="/assets/img/reservechain-wordmark.svg" alt="ReserveChain.io"></a>
+        <a class="brand" href="/"><img src="/assets/img/reservechain-wordmark.svg" data-theme-logo data-dark-src="/assets/img/reservechain-wordmark.svg" data-light-src="/assets/img/reservechain-wordmark-light.svg" alt="ReserveChain.io"></a>
         <nav class="nav" aria-label="Primary navigation">
           ${navGroups.map(([g,keys])=>`<div class="nav-item"><a class="nav-link" href="/${byKey(keys[0]).slug}">${g}<span>⌄</span></a><div class="mega">${keys.map(k=>{const p=byKey(k);return link(p.slug,p.name)}).join('')}</div></div>`).join('')}
         </nav>
+        <button class="theme-toggle" type="button" data-theme-toggle aria-label="Switch to soft white theme"><span class="theme-toggle__icon" data-theme-icon aria-hidden="true">☀</span><span class="theme-toggle__label" data-theme-label>Soft white</span></button>
         ${link('explore-assets','Explore Assets','header-cta')}
         <button class="mobile-toggle" aria-label="Toggle navigation" aria-expanded="false">☰</button>
       </div>
@@ -118,6 +119,7 @@
     else if(r.key==='nickel-wire') body=assetPage(DATA.assets[1]);
     else body=genericPage(r);
     app.innerHTML=header()+body+footer();
+    window.ReserveChainTheme?.refresh();
     wire();
     const p = r.special ? null : r;
     document.title = p ? `${p.title} | ReserveChain.io` : 'ReserveChain.io';
