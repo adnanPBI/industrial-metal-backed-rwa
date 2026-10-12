@@ -8,21 +8,18 @@
       "maxDuration": 20
     }
   },
-  "routes": [
+  "rewrites": [
     {
-      "src": "/api/(.*)",
-      "dest": "/api/index?path=$1"
+      "source": "/api/:path*",
+      "destination": "/api/index?path=:path*"
     },
     {
-      "src": "/verify",
-      "dest": "/api/index?path=verify"
+      "source": "/verify",
+      "destination": "/api/index?path=verify"
     },
     {
-      "handle": "filesystem"
-    },
-    {
-      "src": "/.*",
-      "dest": "/index.html"
+      "source": "/:path*",
+      "destination": "/index.html"
     }
   ],
   "headers": [
