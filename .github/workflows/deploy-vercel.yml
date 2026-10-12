@@ -1,0 +1,121 @@
+name: Deploy ReserveChain demo to Vercel
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/deploy-vercel.yml"
+      - "vercel.json"
+      - "package.json"
+      - "api/**"
+      - "public-demo/**"
+      - "scripts/**"
+      - "wordpress/**"
+      - "fixtures/**"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: reservechain-vercel-production
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: Build, deploy, and verify
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+      VERCEL_SCOPE: ${{ vars.VERCEL_SCOPE || 'adnans-projects-1993fd6c' }}
+      VERCEL_PROJECT_NAME: industrial-metal-backed-rwa
+
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+
+      - name: Verify deployment credentials
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ -z "${VERCEL_TOKEN:-}" ]; then
+            echo "::error::GitHub Actions secret VERCEL_TOKEN is missing or empty"
+            exit 1
+          fi
+          echo "VERCEL_TOKEN is configured (value hidden)."
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+
+      - name: Install dependencies
+        run: npm install --no-audit --no-fund
+
+      - name: Validate and build public app
+        run: |
+          set -euo pipefail
+          npm run build
+          python tests/static_audit.py
+          bash tests/smoke.sh
+          test -s dist/index.html
+          test -s dist/assets/js/site-data.js
+
+      - name: Install Vercel CLI
+        run: npm install --global vercel@latest --no-audit --no-fund
+
+      - name: Verify Vercel access
+        shell: bash
+        run: |
+          set -euo pipefail
+          vercel whoami --token="$VERCEL_TOKEN"
+          echo "Deploying to scope: $VERCEL_SCOPE"
+
+      - name: Deploy to production
+        id: deployment
+        shell: bash
+        run: |
+          set -euo pipefail
+          deployment_output=$(vercel deploy --prod --yes --token="$VERCEL_TOKEN" --scope="$VERCEL_SCOPE")
+          printf '%s\n' "$deployment_output"
+          url=$(printf '%s\n' "$deployment_output" | grep -Eo 'https://[^[:space:]]+\.vercel\.app[^[:space:]]*' | tail -n 1 || true)
+          if [ -z "$url" ]; then
+            echo "::error::Vercel CLI did not return a deployment URL"
+            exit 1
+          fi
+          echo "url=$url" >> "$GITHUB_OUTPUT"
+          {
+            echo "### ReserveChain Vercel deployment"
+            echo ""
+            echo "- Commit: \`$GITHUB_SHA\`"
+            echo "- Scope: \`$VERCEL_SCOPE\`"
+            echo "- URL: $url"
+            echo "- Mode: PRE-LAUNCH; no token purchase, issuance, or redemption"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Live smoke test
+        shell: bash
+        env:
+          DEPLOY_URL: ${{ steps.deployment.outputs.url }}
+        run: |
+          set -euo pipefail
+          base="${DEPLOY_URL%/}"
+          html=$(curl --fail-with-body -sSL --retry 3 --retry-delay 5 "$base/")
+          printf '%s' "$html" | grep -q 'ReserveChain'
+          echo "Homepage HTTP and ReserveChain HTML: PASS"
+          copper=$(curl --fail-with-body -sSL "$base/copper-powder")
+          printf '%s' "$copper" | grep -q 'ReserveChain'
+          echo "SPA copper route: PASS"
+          health=$(curl --fail-with-body -sSL "$base/api/health")
+          printf '%s' "$health" | python3 -c 'import json,sys; d=json.load(sys.stdin); assert d.get("ok") is True and d.get("mode")=="PRE-LAUNCH", d'
+          echo "Serverless health endpoint: PASS"
+          assets=$(curl --fail-with-body -sSL "$base/api/assets")
+          printf '%s' "$assets" | python3 -c 'import json,sys; d=json.load(sys.stdin); assert len(d["items"])==2'
+          echo "Asset API: PASS"
+          echo "All live smoke tests passed" >> "$GITHUB_STEP_SUMMARY"
