@@ -99,10 +99,27 @@ jobs:
             echo "- Mode: PRE-LAUNCH; no token purchase, issuance, or redemption"
           } >> "$GITHUB_STEP_SUMMARY"
 
+      - name: Allow public access to production (retain preview protection)
+        shell: bash
+        run: |
+          set -euo pipefail
+          code=$(curl --silent --show-error --output "$RUNNER_TEMP/vercel-protection.json" --write-out "%{http_code}" \
+            --request PATCH \
+            --url "https://api.vercel.com/v9/projects/$VERCEL_PROJECT_NAME?teamId=team_GI0H1MJPmSQhzRXjQ1DMbK27" \
+            --header "Authorization: Bearer $VERCEL_TOKEN" \
+            --header "Content-Type: application/json" \
+            --data '{"ssoProtection":{"deploymentType":"preview"}}')
+          if [[ "$code" != 2* ]]; then
+            echo "::error::Could not set preview-only deployment protection; Vercel API returned HTTP $code"
+            exit 1
+          fi
+          echo "Production deployment protection: public alias; preview deployments still protected."
+          echo "Production URL: https://industrial-metal-backed-rwa.vercel.app" >> "$GITHUB_STEP_SUMMARY"
+
       - name: Live smoke test
         shell: bash
         env:
-          DEPLOY_URL: ${{ steps.deployment.outputs.url }}
+          DEPLOY_URL: https://industrial-metal-backed-rwa.vercel.app
         run: |
           set -euo pipefail
           base="${DEPLOY_URL%/}"
