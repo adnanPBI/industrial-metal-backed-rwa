@@ -326,7 +326,7 @@ async function handleAdmin(request, path) {
   return json(404, { error: 'Admin API route not found' });
 }
 
-export default async function handler(request) {
+async function routeRequest(request) {
   const url = new URL(request.url);
   const origin = url.origin;
   let path = url.searchParams.get('path') || '';
@@ -387,5 +387,69 @@ export default async function handler(request) {
   } catch (error) {
     console.error('ReserveChain Vercel API error', error);
     return json(500, { error: 'Internal demo API error' });
+  }
+}
+
+/**
+ * Vercel Node.js Functions receive IncomingMessage/ServerResponse, not a Fetch
+ * Request/Response pair. Bridge that runtime boundary explicitly so shared
+ * route logic can use a Fetch-style Request interface.
+ */
+export default async function handler(incoming, outgoing) {
+  if (!outgoing || typeof outgoing.end !== 'function') {
+    return routeRequest(incoming);
+  }
+
+  try {
+    const headers = incoming.headers instanceof Headers
+      ? incoming.headers
+      : new Headers(incoming.headers || {});
+    const host = (headers.get('x-forwarded-host') || headers.get('host') || 'localhost')
+      .split(',')[0].trim();
+    const protocol = (headers.get('x-forwarded-proto') || 'https')
+      .split(',')[0].trim();
+    const url = new URL(incoming.url || '/', protocol + '://' + host);
+
+    const adapted = {
+      method: incoming.method || 'GET',
+      url: url.toString(),
+      headers,
+      async json() {
+        if (Buffer.isBuffer(incoming.body)) {
+          return JSON.parse(incoming.body.toString('utf8'));
+        }
+        if (typeof incoming.body === 'string') {
+          return JSON.parse(incoming.body);
+        }
+        if (incoming.body && typeof incoming.body === 'object') {
+          return incoming.body;
+        }
+        if (typeof incoming[Symbol.asyncIterator] !== 'function') {
+          throw new Error('Missing request body');
+        }
+        let byteCount = 0;
+        const chunks = [];
+        for await (const chunk of incoming) {
+          const bytes = Buffer.from(chunk);
+          byteCount += bytes.length;
+          if (byteCount > MAX_BODY) throw new Error('Request body exceeds limit');
+          chunks.push(bytes);
+        }
+        return JSON.parse(Buffer.concat(chunks).toString('utf8'));
+      }
+    };
+
+    const result = await routeRequest(adapted);
+    outgoing.statusCode = result.status;
+    for (const [key, value] of result.headers.entries()) {
+      outgoing.setHeader(key, value);
+    }
+    outgoing.end(Buffer.from(await result.arrayBuffer()));
+  } catch (error) {
+    console.error('ReserveChain Vercel adapter error', error);
+    outgoing.statusCode = 500;
+    outgoing.setHeader('content-type', 'application/json; charset=utf-8');
+    outgoing.setHeader('cache-control', 'no-store');
+    outgoing.end(JSON.stringify({ error: 'Internal demo API error' }));
   }
 }
