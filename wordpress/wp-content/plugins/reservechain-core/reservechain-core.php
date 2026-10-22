@@ -20,10 +20,12 @@ require_once RC_CORE_DIR . 'includes/class-rc-waitlist.php';
 require_once RC_CORE_DIR . 'includes/class-rc-rest.php';
 require_once RC_CORE_DIR . 'includes/class-rc-pages.php';
 require_once RC_CORE_DIR . 'includes/class-rc-admin.php';
+require_once RC_CORE_DIR . 'includes/class-rc-publication.php';
 
 register_activation_hook(__FILE__, ['RC_Installer', 'activate']);
 add_action('plugins_loaded', function () {
     RC_Pages::init();
     RC_REST::init();
     RC_Admin::init();
+    RC_Publication::init();
 });

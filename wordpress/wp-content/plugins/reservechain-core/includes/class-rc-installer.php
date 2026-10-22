@@ -32,6 +32,22 @@ class RC_Installer {
             record_type varchar(80) NOT NULL, record_id varchar(120) NOT NULL, before_json longtext NULL, after_json longtext NULL, reason text NULL,
             prev_hash char(64) NOT NULL, event_hash char(64) NOT NULL, created_at datetime NOT NULL, PRIMARY KEY (id), KEY record_ref (record_type,record_id), UNIQUE KEY event_hash (event_hash)
         ) {$charset};");
+        dbDelta("CREATE TABLE {$wpdb->prefix}rc_publication_requests (
+            id bigint unsigned NOT NULL AUTO_INCREMENT,
+            asset_id bigint unsigned NOT NULL,
+            maker_user_id bigint unsigned NOT NULL,
+            proposed_json longtext NOT NULL,
+            previous_hash char(64) NOT NULL,
+            maker_reason text NOT NULL,
+            checker_user_id bigint unsigned NULL,
+            owner_approval_ref varchar(180) NULL,
+            checker_reason text NULL,
+            status varchar(24) NOT NULL DEFAULT 'pending',
+            created_at datetime NOT NULL,
+            reviewed_at datetime NULL,
+            PRIMARY KEY (id),
+            KEY asset_status (asset_id,status)
+        ) {$charset};");
         self::seed_options(); self::seed_assets(); self::roles(); RC_Pages::seed_pages(); flush_rewrite_rules();
         RC_Audit::append('plugin_activated','system','reservechain-core',null,['version'=>RC_CORE_VERSION],'Initial platform installation',0);
     }
