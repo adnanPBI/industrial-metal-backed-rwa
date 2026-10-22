@@ -1,0 +1,449 @@
+{
+  "schemaVersion": "review.1",
+  "publicationStatus": "REVIEW_ONLY_NOT_PUBLIC",
+  "notice": "User-provided technical metadata; NOT independent evidence of title, inventory, storage, seals, sampling custody, valuation, insurance or reserves.",
+  "sourceDigests": {
+    "assetPrograms": "aa316b1b9dbe493fe84914e5d799a4e24e47a9674cb47ccc6f980fabf3e9fa05",
+    "passports": "ff1442ae5d59e0e5c4f98d7724722b6c39101710e69a09a77e274f497a096024",
+    "proofOfReserves": "946703f3f3b59631fcbf4d9c3ceb5a4d6055fb12c8b7a4d537b160e7914f7e80"
+  },
+  "illustrativePlaceholder": {
+    "id": "RC-ILLUSTRATIVE-TEMPLATE-000",
+    "title": "Illustrative Industrial Metal Asset Template",
+    "notice": "This presentation demonstrates the future format of a ReserveChain industrial-metal asset page. No verified material, ownership document, laboratory report, valuation, custody arrangement, reserve claim or token is represented by this placeholder.",
+    "material": "Pending",
+    "assetProgram": "Pending",
+    "purity": "Pending",
+    "lotOrBatch": "Pending",
+    "netWeight": "Pending",
+    "laboratoryVerification": "Pending",
+    "ownershipVerification": "Pending",
+    "valuation": "Pending",
+    "custodyStatus": "Pending",
+    "reserveStatus": "Pending",
+    "tokenizationStatus": "Not issued",
+    "availability": "Not offered for sale",
+    "imageText": "Verified industrial-asset photography pending."
+  },
+  "materials": [
+    {
+      "programId": "RC-PROG-CU-001",
+      "slug": "ultrafine-copper-powder",
+      "name": "Ultrafine Copper Powder",
+      "assayReference": "0004512",
+      "assayDate": "2022-07-04",
+      "lot": "Lot #03-K-07",
+      "purityClaim": "99.9999%",
+      "purityVerification": "SOURCE_REFERENCED_NOT_INDEPENDENTLY_VERIFIED",
+      "method": "ICP/OES (Inductively Coupled Plasma Optical Emission Spectrometry)",
+      "impurityObservationsPpm": {
+        "Ag": "8",
+        "Al": "<1",
+        "As": "4",
+        "Au": "<1",
+        "B": "<1",
+        "Ba": "<1",
+        "Bi": "<0.5",
+        "Ca": "<1",
+        "Cd": "<0.5",
+        "Co": "<0.5",
+        "Cr": "<0.5",
+        "Fe": "<1",
+        "Hg": "<1",
+        "K": "<1",
+        "Li": "<1",
+        "Mg": "<1",
+        "Mn": "<0.5",
+        "Mo": "<0.5",
+        "Na": "<1",
+        "Ni": "<0.5",
+        "P": "5",
+        "Pb": "1",
+        "S": "16",
+        "Sb": "1",
+        "Sn": "<0.5",
+        "Sr": "<1",
+        "Ti": "<0.5",
+        "V": "<0.5",
+        "Zn": "<0.5",
+        "Zr": "<0.5"
+      },
+      "reportedWeight": 2000,
+      "weightUnit": "kg",
+      "weightStatus": "CUSTOMER_STATED_NOT_RESERVE_VERIFIED",
+      "sampledUnits": [
+        "Box no.: 20"
+      ],
+      "inventoryUnitCount": null,
+      "inventoryUnits": [
+        {
+          "proposedId": "RC-CU-03K07-BOX-020",
+          "boxNumber": "20",
+          "weightProposalKg": 50,
+          "sealState": "UNVERIFIED_PROPOSAL",
+          "custodyState": "PENDING_EVIDENCE"
+        },
+        {
+          "proposedId": "RC-CU-03K07-BOX-001-019",
+          "boxNumber": "1-19 & 21-40 (Aggregate Lot Series)",
+          "weightProposalKg": 1950,
+          "sealState": "UNVERIFIED_PROPOSAL",
+          "custodyState": "PENDING_EVIDENCE"
+        }
+      ],
+      "approvedReserveValue": null,
+      "eligibility": "NOT_ASSESSED",
+      "tokenSupply": 0,
+      "forSale": false
+    },
+    {
+      "programId": "RC-PROG-NI-002",
+      "slug": "ultrafine-nickel-wire-0-025-mm",
+      "name": "Ultrafine Nickel Wire 0.025 mm",
+      "assayReference": "0004368",
+      "assayDate": "2021-10-19",
+      "lot": "Lot \"120/NP1\"",
+      "purityClaim": "99.9807%",
+      "purityVerification": "SOURCE_REFERENCED_NOT_INDEPENDENTLY_VERIFIED",
+      "method": "ICP/MS and ICP/OES",
+      "impurityObservationsPpm": {
+        "Ag": "<0.5",
+        "Al": "<1",
+        "As": "13",
+        "B": "<1",
+        "Bi": "<0.1",
+        "Ca": "<1",
+        "Cd": "<0.1",
+        "Co": "41",
+        "Cr": "<1",
+        "Cu": "45",
+        "Fe": "116",
+        "Hf": "<0.1",
+        "K": "41",
+        "Mg": "<1",
+        "Mn": "3",
+        "Mo": "<0.5",
+        "Na": "<1",
+        "Nb": "<0.1",
+        "Ni": "Matrix",
+        "P": "<1",
+        "Pb": "3",
+        "Pd": "<0.1",
+        "Pt": "<0.1",
+        "S": "<1",
+        "Sb": "<0.5",
+        "Se": "<1",
+        "Si": "13",
+        "Sn": "<0.5",
+        "Ta": "<0.5",
+        "Ti": "227",
+        "U": "<0.1",
+        "V": "<0.5",
+        "W": "<0.5",
+        "Zn": "<1",
+        "Zr": "<0.5"
+      },
+      "reportedWeight": 5000,
+      "weightUnit": "g",
+      "weightStatus": "CUSTOMER_STATED_NOT_RESERVE_VERIFIED",
+      "sampledUnits": [
+        8,
+        10,
+        19,
+        27
+      ],
+      "inventoryUnitCount": 30,
+      "inventoryUnits": [
+        {
+          "proposedId": "RC-NI-120NP1-BOBBIN-01",
+          "number": 1,
+          "weightEstimateGrams": 166.67,
+          "observedSampleFlag": false,
+          "sealState": "UNVERIFIED_PROPOSAL",
+          "custodyState": "PENDING_EVIDENCE"
+        },
+        {
+          "proposedId": "RC-NI-120NP1-BOBBIN-02",
+          "number": 2,
+          "weightEstimateGrams": 166.67,
+          "observedSampleFlag": false,
+          "sealState": "UNVERIFIED_PROPOSAL",
+          "custodyState": "PENDING_EVIDENCE"
+        },
+        {
+          "proposedId": "RC-NI-120NP1-BOBBIN-03",
+          "number": 3,
+          "weightEstimateGrams": 166.67,
+          "observedSampleFlag": false,
+          "sealState": "UNVERIFIED_PROPOSAL",
+          "custodyState": "PENDING_EVIDENCE"
+        },
+        {
+          "proposedId": "RC-NI-120NP1-BOBBIN-04",
+          "number": 4,
+          "weightEstimateGrams": 166.67,
+          "observedSampleFlag": false,
+          "sealState": "UNVERIFIED_PROPOSAL",
+          "custodyState": "PENDING_EVIDENCE"
+        },
+        {
+          "proposedId": "RC-NI-120NP1-BOBBIN-05",
+          "number": 5,
+          "weightEstimateGrams": 166.67,
+          "observedSampleFlag": false,
+          "sealState": "UNVERIFIED_PROPOSAL",
+          "custodyState": "PENDING_EVIDENCE"
+        },
+        {
+          "proposedId": "RC-NI-120NP1-BOBBIN-06",
+          "number": 6,
+          "weightEstimateGrams": 166.67,
+          "observedSampleFlag": false,
+          "sealState": "UNVERIFIED_PROPOSAL",
+          "custodyState": "PENDING_EVIDENCE"
+        },
+        {
+          "proposedId": "RC-NI-120NP1-BOBBIN-07",
+          "number": 7,
+          "weightEstimateGrams": 166.67,
+          "observedSampleFlag": false,
+          "sealState": "UNVERIFIED_PROPOSAL",
+          "custodyState": "PENDING_EVIDENCE"
+        },
+        {
+          "proposedId": "RC-NI-120NP1-BOBBIN-08",
+          "number": 8,
+          "weightEstimateGrams": 166.67,
+          "observedSampleFlag": true,
+          "sealState": "UNVERIFIED_PROPOSAL",
+          "custodyState": "PENDING_EVIDENCE"
+        },
+        {
+          "proposedId": "RC-NI-120NP1-BOBBIN-09",
+          "number": 9,
+          "weightEstimateGrams": 166.67,
+          "observedSampleFlag": false,
+          "sealState": "UNVERIFIED_PROPOSAL",
+          "custodyState": "PENDING_EVIDENCE"
+        },
+        {
+          "proposedId": "RC-NI-120NP1-BOBBIN-10",
+          "number": 10,
+          "weightEstimateGrams": 166.67,
+          "observedSampleFlag": true,
+          "sealState": "UNVERIFIED_PROPOSAL",
+          "custodyState": "PENDING_EVIDENCE"
+        },
+        {
+          "proposedId": "RC-NI-120NP1-BOBBIN-11",
+          "number": 11,
+          "weightEstimateGrams": 166.67,
+          "observedSampleFlag": false,
+          "sealState": "UNVERIFIED_PROPOSAL",
+          "custodyState": "PENDING_EVIDENCE"
+        },
+        {
+          "proposedId": "RC-NI-120NP1-BOBBIN-12",
+          "number": 12,
+          "weightEstimateGrams": 166.67,
+          "observedSampleFlag": false,
+          "sealState": "UNVERIFIED_PROPOSAL",
+          "custodyState": "PENDING_EVIDENCE"
+        },
+        {
+          "proposedId": "RC-NI-120NP1-BOBBIN-13",
+          "number": 13,
+          "weightEstimateGrams": 166.67,
+          "observedSampleFlag": false,
+          "sealState": "UNVERIFIED_PROPOSAL",
+          "custodyState": "PENDING_EVIDENCE"
+        },
+        {
+          "proposedId": "RC-NI-120NP1-BOBBIN-14",
+          "number": 14,
+          "weightEstimateGrams": 166.67,
+          "observedSampleFlag": false,
+          "sealState": "UNVERIFIED_PROPOSAL",
+          "custodyState": "PENDING_EVIDENCE"
+        },
+        {
+          "proposedId": "RC-NI-120NP1-BOBBIN-15",
+          "number": 15,
+          "weightEstimateGrams": 166.67,
+          "observedSampleFlag": false,
+          "sealState": "UNVERIFIED_PROPOSAL",
+          "custodyState": "PENDING_EVIDENCE"
+        },
+        {
+          "proposedId": "RC-NI-120NP1-BOBBIN-16",
+          "number": 16,
+          "weightEstimateGrams": 166.67,
+          "observedSampleFlag": false,
+          "sealState": "UNVERIFIED_PROPOSAL",
+          "custodyState": "PENDING_EVIDENCE"
+        },
+        {
+          "proposedId": "RC-NI-120NP1-BOBBIN-17",
+          "number": 17,
+          "weightEstimateGrams": 166.67,
+          "observedSampleFlag": false,
+          "sealState": "UNVERIFIED_PROPOSAL",
+          "custodyState": "PENDING_EVIDENCE"
+        },
+        {
+          "proposedId": "RC-NI-120NP1-BOBBIN-18",
+          "number": 18,
+          "weightEstimateGrams": 166.67,
+          "observedSampleFlag": false,
+          "sealState": "UNVERIFIED_PROPOSAL",
+          "custodyState": "PENDING_EVIDENCE"
+        },
+        {
+          "proposedId": "RC-NI-120NP1-BOBBIN-19",
+          "number": 19,
+          "weightEstimateGrams": 166.67,
+          "observedSampleFlag": true,
+          "sealState": "UNVERIFIED_PROPOSAL",
+          "custodyState": "PENDING_EVIDENCE"
+        },
+        {
+          "proposedId": "RC-NI-120NP1-BOBBIN-20",
+          "number": 20,
+          "weightEstimateGrams": 166.67,
+          "observedSampleFlag": false,
+          "sealState": "UNVERIFIED_PROPOSAL",
+          "custodyState": "PENDING_EVIDENCE"
+        },
+        {
+          "proposedId": "RC-NI-120NP1-BOBBIN-21",
+          "number": 21,
+          "weightEstimateGrams": 166.67,
+          "observedSampleFlag": false,
+          "sealState": "UNVERIFIED_PROPOSAL",
+          "custodyState": "PENDING_EVIDENCE"
+        },
+        {
+          "proposedId": "RC-NI-120NP1-BOBBIN-22",
+          "number": 22,
+          "weightEstimateGrams": 166.67,
+          "observedSampleFlag": false,
+          "sealState": "UNVERIFIED_PROPOSAL",
+          "custodyState": "PENDING_EVIDENCE"
+        },
+        {
+          "proposedId": "RC-NI-120NP1-BOBBIN-23",
+          "number": 23,
+          "weightEstimateGrams": 166.67,
+          "observedSampleFlag": false,
+          "sealState": "UNVERIFIED_PROPOSAL",
+          "custodyState": "PENDING_EVIDENCE"
+        },
+        {
+          "proposedId": "RC-NI-120NP1-BOBBIN-24",
+          "number": 24,
+          "weightEstimateGrams": 166.67,
+          "observedSampleFlag": false,
+          "sealState": "UNVERIFIED_PROPOSAL",
+          "custodyState": "PENDING_EVIDENCE"
+        },
+        {
+          "proposedId": "RC-NI-120NP1-BOBBIN-25",
+          "number": 25,
+          "weightEstimateGrams": 166.67,
+          "observedSampleFlag": false,
+          "sealState": "UNVERIFIED_PROPOSAL",
+          "custodyState": "PENDING_EVIDENCE"
+        },
+        {
+          "proposedId": "RC-NI-120NP1-BOBBIN-26",
+          "number": 26,
+          "weightEstimateGrams": 166.67,
+          "observedSampleFlag": false,
+          "sealState": "UNVERIFIED_PROPOSAL",
+          "custodyState": "PENDING_EVIDENCE"
+        },
+        {
+          "proposedId": "RC-NI-120NP1-BOBBIN-27",
+          "number": 27,
+          "weightEstimateGrams": 166.67,
+          "observedSampleFlag": true,
+          "sealState": "UNVERIFIED_PROPOSAL",
+          "custodyState": "PENDING_EVIDENCE"
+        },
+        {
+          "proposedId": "RC-NI-120NP1-BOBBIN-28",
+          "number": 28,
+          "weightEstimateGrams": 166.67,
+          "observedSampleFlag": false,
+          "sealState": "UNVERIFIED_PROPOSAL",
+          "custodyState": "PENDING_EVIDENCE"
+        },
+        {
+          "proposedId": "RC-NI-120NP1-BOBBIN-29",
+          "number": 29,
+          "weightEstimateGrams": 166.67,
+          "observedSampleFlag": false,
+          "sealState": "UNVERIFIED_PROPOSAL",
+          "custodyState": "PENDING_EVIDENCE"
+        },
+        {
+          "proposedId": "RC-NI-120NP1-BOBBIN-30",
+          "number": 30,
+          "weightEstimateGrams": 166.67,
+          "observedSampleFlag": false,
+          "sealState": "UNVERIFIED_PROPOSAL",
+          "custodyState": "PENDING_EVIDENCE"
+        }
+      ],
+      "approvedReserveValue": null,
+      "eligibility": "NOT_ASSESSED",
+      "tokenSupply": 0,
+      "forSale": false
+    }
+  ],
+  "futureCategories": [
+    {
+      "categoryId": "RC-FUT-PM",
+      "name": "Precious Metals",
+      "status": "FUTURE/NOT_ACTIVE",
+      "includedInReserveTotals": false
+    },
+    {
+      "categoryId": "RC-FUT-GEM",
+      "name": "Gemstone Assets",
+      "status": "FUTURE/NOT_ACTIVE",
+      "includedInReserveTotals": false
+    },
+    {
+      "categoryId": "RC-FUT-NRG",
+      "name": "Energy Assets",
+      "status": "FUTURE/NOT_ACTIVE",
+      "includedInReserveTotals": false
+    },
+    {
+      "categoryId": "RC-FUT-RE",
+      "name": "Real Estate Opportunities",
+      "status": "FUTURE/NOT_ACTIVE",
+      "includedInReserveTotals": false
+    },
+    {
+      "categoryId": "RC-FUT-ART",
+      "name": "Art & Collectibles",
+      "status": "FUTURE/NOT_ACTIVE",
+      "includedInReserveTotals": false
+    },
+    {
+      "categoryId": "RC-FUT-OTH",
+      "name": "Other Real-World Assets",
+      "status": "FUTURE/NOT_ACTIVE",
+      "includedInReserveTotals": false
+    }
+  ],
+  "riskChecks": [
+    "Paper IGAS assay is not proof of beneficial ownership/custody/current quantity",
+    "Supplied seal IDs and unit-level weights require independent verification",
+    "Never use proposed units for physical redemption or proof-of-reserves",
+    "Do not publish original scan without rights, privacy review and owner signoff",
+    "Jurisdiction and regulatory restrictions require licensed counsel approval"
+  ]
+}

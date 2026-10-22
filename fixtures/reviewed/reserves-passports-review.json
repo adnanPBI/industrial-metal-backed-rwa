@@ -1,0 +1,41 @@
+{
+  "schemaVersion": "review.1",
+  "publicationStatus": "REVIEW_ONLY_NOT_PUBLIC",
+  "mode": "Pre-Launch",
+  "issuedTokenSupply": 0,
+  "circulatingSupply": 0,
+  "eligibleVerifiedReserveValue": null,
+  "reportedInventoryIsVerifiedReserves": false,
+  "coverageRatio": null,
+  "independentCustodyAttestation": "NOT_AVAILABLE",
+  "insurance": "NOT_VERIFIED",
+  "reconciliationRun": "NOT_IMPLEMENTED",
+  "sourceStatus": "UNVERIFIED_USER_PROPOSAL",
+  "missingDocuments": [
+    "Final executed Swiss custody & vaulting agreement pending owner upload",
+    "Final marine/vault insurance certificate pending owner upload",
+    "Independent market valuation report pending owner approval"
+  ],
+  "originalPassports": [
+    {
+      "passportId": "DAP-CU-03K07-001",
+      "assetProgramId": "RC-PROG-CU-001",
+      "certificateNumber": "0004512",
+      "sourceLot": "Lot #03-K-07",
+      "publicationStatus": "REVIEW_ONLY",
+      "custodyStatus": "PENDING_EVIDENCE",
+      "reserveStatus": "PENDING_RECONCILIATION",
+      "tokenizationStatus": "NOT_ISSUED"
+    },
+    {
+      "passportId": "DAP-NI-120NP1-002",
+      "assetProgramId": "RC-PROG-NI-002",
+      "certificateNumber": "0004368",
+      "sourceLot": "Lot \"120/NP1\"",
+      "publicationStatus": "REVIEW_ONLY",
+      "custodyStatus": "PENDING_EVIDENCE",
+      "reserveStatus": "PENDING_RECONCILIATION",
+      "tokenizationStatus": "NOT_ISSUED"
+    }
+  ]
+}

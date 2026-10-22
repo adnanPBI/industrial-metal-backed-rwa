@@ -25,7 +25,7 @@ jobs:
       - name: Generate derived site data
         run: python scripts/generate_site_data.py
       - name: Theme accessibility and persistence tests
-        run: node --test tests/theme-toggle.test.mjs
+        run: node --test tests/theme-toggle.test.mjs tests/remediation_review.test.mjs
       - name: Static audit
         run: python tests/static_audit.py
       - name: End-to-end smoke test
