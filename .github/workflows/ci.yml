@@ -26,6 +26,8 @@ jobs:
         run: python scripts/generate_site_data.py
       - name: Theme accessibility and persistence tests
         run: node --test tests/theme-toggle.test.mjs tests/remediation_review.test.mjs tests/reconciliation.test.mjs
+      - name: WordPress interface and publication authorization regression
+        run: php tests/wordpress_publication_compat.php
       - name: Static audit
         run: python tests/static_audit.py
       - name: End-to-end smoke test
