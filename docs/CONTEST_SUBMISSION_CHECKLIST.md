@@ -21,3 +21,7 @@ Use the working demo, not screenshots alone.
 - [x] Source-conflict register.
 
 Before public hosting, replace the staging hostname, configure transactional email, set environment secrets, run a real browser/device QA pass and decide whether the supplied certificate previews are authorized for public display. If not, keep only metadata and an approval-pending placeholder.
+
+## Independent audit correction (2026-10-22)
+
+The [x] marks above refer to **local contest-demo and code foundation**, not full 22-phase production acceptance. The hosted Vercel waitlist **must not receive real user registrations until persistent storage and outbound verification email are configured and approved**. WordPress does not run within the Vercel static/serverless deployment. Original third-party assay scans are withheld pending consent, redaction and publication approval. The 34-file contributed ZIP patch is not merged wholesale due incompatible existing WordPress interfaces and unsafe financial/contract assumptions; see `docs/REMEDIATION_AUDIT_20261022.md`.

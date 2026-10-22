@@ -80,3 +80,20 @@ GitHub Actions runs the static audit, end-to-end public-demo smoke test, PHP lin
 ## 8. Public-repository evidence handling
 
 The public repository intentionally does **not** republish the original client-supplied IGAS certificate scans because those source documents include third-party contact/banking details. The UI uses repository-safe SVG evidence previews containing only the approved demo metadata. Original evidence remains an owner-controlled source input for the private production evidence store.
+
+## 9. Independent remediation audit (2026-10-22)
+
+The additional externally authored audit and 34-entry patch archive were inspected. **The patch is not safe to apply wholesale**: its replacement PHP admin/audit/waitlist interfaces break existing plugin wiring, its installer swaps table names rather than migrating the installed database, and its indexer/reconciliation/KYC/USDT/redemption sketches omit core verification and security gates.
+
+See [docs/REMEDIATION_AUDIT_20261022.md](docs/REMEDIATION_AUDIT_20261022.md) for the specific rejected changes and final acceptance gaps.
+
+Implemented reviewed additions:
+- compatible WordPress publication approval queue with different maker/checker identities, explicit owner approval reference, default-disabled publication gate and incremental upgrade path;
+- review-only industrial-metal/assay and passport metadata, with proposed physical units **never** treated as verified title, custody, reserves or serial seals;
+- [reconciliation/](reconciliation/) exact BigInt 6/18-decimal offline balance validator, deliberately not an attested live 17-ledger accounting engine;
+- draft EN/ES/IT language keys (full editorial/localized routes and legal approval still pending), evidence-handling manual, owner input register and a corrected review-only whitepaper summary;
+- WordPress illustrative evidence-preview SVG parity, interface compatibility tests and additional CI gates.
+
+**Hosted Vercel scope:** the public website, blue-glass/soft-white theme toggle, static materials, public asset/passport API and pre-launch UI. Hosted persistent email-verified waitlist and WordPress CMS are not independently accepted or proven production-ready. The private review fixtures are not Vercel public web content.
+
+**Do not claim full Phase 1–22 delivery.** Custody/title, contract deployment/audit, legal offering approval, attested reserve coverage, KYC/AML provider, a complete dual-entry 17-ledger system, chain indexer, working physical redemption, native app-store builds and disaster-recovery acceptance remain outstanding.
