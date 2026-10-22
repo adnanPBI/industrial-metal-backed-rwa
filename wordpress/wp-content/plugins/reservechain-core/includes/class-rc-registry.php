@@ -24,7 +24,11 @@ class RC_Registry {
         }
         $allowed=['name','lot_id','purity','diameter','certificate_no','certificate_date','laboratory','publication_state','verification_status','custody_status','reserve_status','tokenization_status','evidence_note'];
         $clean=[]; foreach($allowed as $k) if(array_key_exists($k,$fields)) $clean[$k]=sanitize_textarea_field($fields[$k]);
-        $clean['updated_at']=gmdate('Y-m-d H:i:s'); $wpdb->update($table,$clean,['id'=>$id]); $after=$wpdb->get_row($wpdb->prepare("SELECT * FROM {$table} WHERE id=%d",$id),ARRAY_A);
+        $clean['updated_at']=gmdate('Y-m-d H:i:s');
+        $written=$wpdb->update($table,$clean,['id'=>$id]);
+        if($written===false) return new WP_Error('registry_update_failed','Database rejected the asset change.');
+        $after=$wpdb->get_row($wpdb->prepare("SELECT * FROM {$table} WHERE id=%d",$id),ARRAY_A);
+        if(!$after) return new WP_Error('registry_read_failed','Asset unavailable after update.');
         RC_Audit::append('asset_updated','asset',$id,$before,$after,$reason); return $after;
     }
 }

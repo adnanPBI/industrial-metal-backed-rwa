@@ -1,6 +1,37 @@
 <?php
 if (!defined('ABSPATH')) { exit; }
 class RC_Installer {
+    /**
+     * Non-destructive upgrade on existing plugin installations.
+     * dbDelta adds this single queue table without replacing any rc_* tables.
+     * The live CMS has NOT been integration-tested by repository CI.
+     */
+    public static function ensure_publication_schema(){
+        if(get_option('rc_publication_schema_v1')==='1') return;
+        global $wpdb;
+        require_once ABSPATH . 'wp-admin/includes/upgrade.php';
+        $table=$wpdb->prefix.'rc_publication_requests';
+        $charset=$wpdb->get_charset_collate();
+        dbDelta("CREATE TABLE {$table} (
+            id bigint unsigned NOT NULL AUTO_INCREMENT,
+            asset_id bigint unsigned NOT NULL,
+            maker_user_id bigint unsigned NOT NULL,
+            proposed_json longtext NOT NULL,
+            previous_hash char(64) NOT NULL,
+            maker_reason text NOT NULL,
+            checker_user_id bigint unsigned NULL,
+            owner_approval_ref varchar(180) NULL,
+            checker_reason text NULL,
+            status varchar(24) NOT NULL DEFAULT 'pending',
+            created_at datetime NOT NULL,
+            reviewed_at datetime NULL,
+            PRIMARY KEY (id),
+            KEY asset_status (asset_id,status)
+        ) {$charset};");
+        if($wpdb->get_var($wpdb->prepare("SHOW TABLES LIKE %s",$table))===$table) {
+            update_option('rc_publication_schema_v1','1',false);
+        }
+    }
     public static function activate() {
         global $wpdb; require_once ABSPATH . 'wp-admin/includes/upgrade.php'; $charset = $wpdb->get_charset_collate();
         $assets = $wpdb->prefix . 'rc_assets'; $docs = $wpdb->prefix . 'rc_documents'; $wait = $wpdb->prefix . 'rc_waitlist'; $audit = $wpdb->prefix . 'rc_audit';

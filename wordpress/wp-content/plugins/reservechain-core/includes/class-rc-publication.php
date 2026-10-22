@@ -77,25 +77,42 @@ class RC_Publication {
         $ref=sanitize_text_field(wp_unslash($_POST['approval_ref']??''));
         $reason=sanitize_textarea_field(wp_unslash($_POST['review_reason']??''));
         if(!in_array($decision,['approve','reject'],true) || $reason==='') wp_die('Invalid review.');
-        $r=$wpdb->get_row($wpdb->prepare("SELECT * FROM ".self::table()." WHERE id=%d",$id),ARRAY_A);
-        if(!$r || $r['status']!=='pending') wp_die('Request already handled.');
-        if((int)$r['maker_user_id']===get_current_user_id()) wp_die('Maker and checker must be different users.');
-        $asset=$wpdb->get_row($wpdb->prepare("SELECT * FROM ".RC_Registry::table()." WHERE id=%d",(int)$r['asset_id']),ARRAY_A);
-        if(!$asset || !hash_equals($r['previous_hash'],hash('sha256',wp_json_encode($asset)))) wp_die('Asset changed since request; re-submit review.');
-        if($decision==='approve'){
-            if(!(defined('RC_ALLOW_EVIDENCE_PUBLICATION') && RC_ALLOW_EVIDENCE_PUBLICATION)) wp_die('Owner authorization gate disabled.');
-            if($ref==='') wp_die('Owner approval reference is mandatory.');
-            $proposal=json_decode($r['proposed_json'],true);
-            if(!is_array($proposal)) wp_die('Malformed approval request.');
-            $result=RC_Registry::update((int)$r['asset_id'],$proposal,'Checker approval '.$ref.': '.$reason,true);
-            if(is_wp_error($result) || !$result) wp_die('Registry publication failed.');
+        // Lock queue + asset as one transaction so two reviewers cannot both authorize.
+        $wpdb->query('START TRANSACTION');
+        $r=$wpdb->get_row($wpdb->prepare("SELECT * FROM ".self::table()." WHERE id=%d FOR UPDATE",$id),ARRAY_A);
+        if(!$r || $r['status']!=='pending') {
+            $wpdb->query('ROLLBACK'); wp_die('Request already handled.');
         }
-        $wpdb->update(self::table(),[
+        if((int)$r['maker_user_id']===get_current_user_id()) {
+            $wpdb->query('ROLLBACK'); wp_die('Maker and checker must be different users.');
+        }
+        $asset=$wpdb->get_row($wpdb->prepare("SELECT * FROM ".RC_Registry::table()." WHERE id=%d FOR UPDATE",(int)$r['asset_id']),ARRAY_A);
+        if(!$asset || !hash_equals($r['previous_hash'],hash('sha256',wp_json_encode($asset)))) {
+            $wpdb->query('ROLLBACK'); wp_die('Asset changed since request; re-submit review.');
+        }
+        if($decision==='approve'){
+            if(!(defined('RC_ALLOW_EVIDENCE_PUBLICATION') && RC_ALLOW_EVIDENCE_PUBLICATION)){
+                $wpdb->query('ROLLBACK'); wp_die('Owner authorization gate disabled.');
+            }
+            if($ref==='') { $wpdb->query('ROLLBACK'); wp_die('Owner approval reference is mandatory.'); }
+            $proposal=json_decode($r['proposed_json'],true);
+            if(!is_array($proposal) || ($proposal['publication_state']??'')!=='published') {
+                $wpdb->query('ROLLBACK'); wp_die('Malformed approval request.');
+            }
+            $result=RC_Registry::update((int)$r['asset_id'],$proposal,'Checker approval '.$ref.': '.$reason,true);
+            if(is_wp_error($result) || !$result) {
+                $wpdb->query('ROLLBACK'); wp_die('Registry publication failed.');
+            }
+        }
+        $affected=$wpdb->update(self::table(),[
             'checker_user_id'=>get_current_user_id(),'checker_reason'=>$reason,
             'owner_approval_ref'=>$ref,'status'=>$decision==='approve'?'approved':'rejected',
             'reviewed_at'=>gmdate('Y-m-d H:i:s')
         ],['id'=>$id,'status'=>'pending']);
+        if($affected!==1) { $wpdb->query('ROLLBACK'); wp_die('Unable to complete review.'); }
         RC_Audit::append('publication_'.$decision,'asset',$r['asset_id'],['queue_id'=>$id],['owner_approval_ref'=>$ref],$reason);
+        $committed=$wpdb->query('COMMIT');
+        if($committed===false) wp_die('Transaction commit failed; inspect database and audit.');
         wp_safe_redirect(admin_url('admin.php?page=rc-publication-review&reviewed=1')); exit;
     }
 }

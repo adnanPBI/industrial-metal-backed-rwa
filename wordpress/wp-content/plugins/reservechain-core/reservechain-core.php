@@ -23,6 +23,7 @@ require_once RC_CORE_DIR . 'includes/class-rc-admin.php';
 require_once RC_CORE_DIR . 'includes/class-rc-publication.php';
 
 register_activation_hook(__FILE__, ['RC_Installer', 'activate']);
+add_action('plugins_loaded', ['RC_Installer','ensure_publication_schema'], 1);
 add_action('plugins_loaded', function () {
     RC_Pages::init();
     RC_REST::init();
