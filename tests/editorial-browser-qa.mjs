@@ -10,7 +10,7 @@ async function audit(name,fn){try{await fn();console.log('PASS: '+name);}catch(e
 
 await audit('dark desktop 1440px',async()=>{
   const context=await browser.newContext({viewport:{width:1440,height:900},deviceScaleFactor:1});
-  await context.addInitScript(()=>localStorage.setItem('reservechain.theme','dark'));
+  await context.addInitScript(()=>{ if(!localStorage.getItem('reservechain.theme')) localStorage.setItem('reservechain.theme','dark'); });
   const page=await context.newPage();
   const errors=[];page.on('pageerror',x=>errors.push(x.message));
   await page.goto(base+'/',{waitUntil:'networkidle'});
@@ -37,7 +37,7 @@ await audit('dark desktop 1440px',async()=>{
 
 await audit('soft white desktop theme toggle and persistence',async()=>{
   const context=await browser.newContext({viewport:{width:1440,height:900}});
-  await context.addInitScript(()=>localStorage.setItem('reservechain.theme','dark'));
+  await context.addInitScript(()=>{ if(!localStorage.getItem('reservechain.theme')) localStorage.setItem('reservechain.theme','dark'); });
   const page=await context.newPage();
   await page.goto(base+'/',{waitUntil:'networkidle'});
   await page.locator('button[data-theme-toggle]').click();
@@ -54,7 +54,7 @@ await audit('soft white desktop theme toggle and persistence',async()=>{
 
 await audit('390px mobile navigation, editorial cards and no overflow',async()=>{
   const context=await browser.newContext({viewport:{width:390,height:844},deviceScaleFactor:1,isMobile:true,hasTouch:true});
-  await context.addInitScript(()=>localStorage.setItem('reservechain.theme','dark'));
+  await context.addInitScript(()=>{ if(!localStorage.getItem('reservechain.theme')) localStorage.setItem('reservechain.theme','dark'); });
   const page=await context.newPage();
   await page.goto(base+'/',{waitUntil:'networkidle'});
   await page.locator('.rcv-future-grid').waitFor();
