@@ -1,0 +1,38 @@
+name: ReserveChain visual browser QA
+on:
+  workflow_run:
+    workflows: ["Deploy ReserveChain demo to Vercel"]
+    types: [completed]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  browser:
+    if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-latest
+    timeout-minutes: 18
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install browser test tools
+        run: |
+          npm install --no-save --no-audit playwright@1.56.1
+          npx playwright install --with-deps chromium
+      - name: Responsive dark/light visual QA and production image check
+        env:
+          RC_SITE_URL: https://industrial-metal-backed-rwa.vercel.app
+        run: node tests/editorial-browser-qa.mjs
+      - name: Upload screenshots and QA artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: reservechain-visual-qa
+          path: artifacts/visual-qa/
+          if-no-files-found: warn
+          retention-days: 14
