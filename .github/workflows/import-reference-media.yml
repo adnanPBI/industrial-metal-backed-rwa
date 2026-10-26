@@ -1,0 +1,52 @@
+name: Import ReserveChain illustrative reference photographs
+on:
+  push:
+    branches: [main]
+    paths:
+      - "scripts/import_reference_media.py"
+      - ".github/workflows/import-reference-media.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: reservechain-photo-import
+  cancel-in-progress: false
+
+jobs:
+  import:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - name: Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - name: Pillow
+        run: pip install "Pillow>=11,<13"
+      - name: Download illustrative media from official project site only
+        run: python scripts/import_reference_media.py
+      - name: Confirm no documents, assay certificates or personal records copied
+        run: |
+          set -euo pipefail
+          test -d public-demo/public/assets/img/editorial
+          find public-demo/public/assets/img/editorial -type f -maxdepth 1 -printf '%f\n'
+          find public-demo/public/assets/img/editorial -type f -maxdepth 1 | grep -q webp
+      - name: Commit verified editorial media with provenance
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add public-demo/public/assets/img/editorial wordpress/wp-content/themes/reservechain/assets/img/editorial docs/registers/EDITORIAL_MEDIA_PROVENANCE.json
+          if git diff --cached --quiet; then
+            echo "No editorial media changes."
+          else
+            git commit -m "assets(ui): import project-owned illustrative product imagery with provenance"
+            git pull --rebase origin main
+            git push origin HEAD:main
+          fi
