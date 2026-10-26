@@ -129,7 +129,17 @@
     const livePrograms=main.querySelectorAll('.asset-card, .rc-card');
     livePrograms.forEach(n=>{const image=n.querySelector('.visual, .rc-asset-visual');if(image){
       const file=image.classList.contains('nickel')||n.classList.contains('nickel')?'nickel-wire.webp':'copper-powder.webp';
-      image.classList.add('rcv-inline-asset');image.innerHTML=photo(file,'Illustrative '+(file.startsWith('nickel')?'nickel wire':'copper powder')+' product');}});
+      image.classList.add('rcv-inline-asset');image.innerHTML=photo(file,'Illustrative '+(file.startsWith('nickel')?'nickel wire':'copper powder')+' product');
+      if (!n.classList.contains('rcv-split-asset')) {
+        const copy=document.createElement('div');
+        copy.className='rcv-asset-copy';
+        for (const child of Array.from(n.children)) {
+          if (child !== image) copy.appendChild(child);
+        }
+        n.appendChild(copy);
+        n.classList.add('rcv-split-asset');
+      }
+    }});
     const existingFuture=main.querySelector('.future-grid');
     if(existingFuture){existingFuture.closest('.section')?.remove();}
     const chain=main.querySelector('.chain, .rc-chain');

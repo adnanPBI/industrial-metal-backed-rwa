@@ -37,3 +37,9 @@ test('contextual editorial heroes are available on internal routes',()=>{
   assert.match(demo,/copper-powder\.webp/);
   assert.match(css,/\.rcv-page-hero-grid/);
 });
+
+test('physical program cards render as responsive image/copy split components',()=>{
+  assert.match(demo,/rcv-split-asset/);
+  assert.match(demo,/rcv-asset-copy/);
+  assert.match(css,/\.rcv-split-asset/);
+});
