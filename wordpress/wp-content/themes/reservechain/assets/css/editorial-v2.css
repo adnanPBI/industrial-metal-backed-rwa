@@ -116,3 +116,13 @@ html[data-theme="light"] .rcv-step small{color:#60788b}
 @media(max-width:900px){.rcv-pillars .rcv-wrap{grid-template-columns:repeat(3,1fr);gap:25px}.rcv-pillar:nth-child(3){border:none}.rcv-future-grid{grid-template-columns:repeat(2,1fr)}.rcv-lifecycle{grid-template-columns:repeat(3,1fr);row-gap:26px}.rcv-step:nth-child(3):after{display:none}.rcv-evidence-grid{grid-template-columns:1fr}.rcv-scene{min-height:380px}}
 @media(max-width:620px){.rcv-wrap{width:calc(100% - 28px)}.rcv-metrics{grid-template-columns:repeat(2,1fr);gap:12px}.rcv-program-bar{padding:17px 0}.rcv-metrics>div{padding:8px 10px}.rcv-metric-cta{width:100%;text-align:center}.rcv-pillars .rcv-wrap{grid-template-columns:1fr 1fr;gap:20px}.rcv-pillar{padding:0 12px;border-right:none;border-left:1px solid rgba(200,153,91,.2)}.rcv-future-grid{grid-template-columns:1fr}.rcv-lifecycle{grid-template-columns:repeat(2,1fr)}.rcv-step:nth-child(2n):after{display:none}.rcv-passport,.rcv-reserves{padding:19px}.rcv-passport-inner{grid-template-columns:1fr}.rcv-passport-photo{height:175px}.rcv-hero-caption{position:relative;left:auto;right:auto;bottom:auto;margin-top:auto;width:100%}.rcv-scene{min-height:280px}.rcv-hero-globe{width:230px;height:230px}}
 @media(prefers-reduced-motion:reduce){.rcv-media img{transition:none}}
+
+/* 51-page secondary hero treatment; preserves native page bodies and disclosures */
+.rcv-page-hero-grid{display:grid;grid-template-columns:minmax(0,1.07fr) minmax(280px,.93fr);align-items:center;gap:38px}
+.rcv-page-copy{min-width:0}
+.rcv-page-art{height:325px;min-height:280px;border:1px solid rgba(223,161,76,.32);border-radius:19px;background:radial-gradient(circle at 55% 42%,rgba(201,131,54,.25),#0a111a 70%);box-shadow:0 24px 55px rgba(0,0,0,.2)}
+.rcv-page-art:after{content:"ILLUSTRATIVE EDITORIAL VISUAL · NO OWNERSHIP OR CUSTODY CLAIM";position:absolute;bottom:0;inset-inline:0;padding:12px;background:linear-gradient(0deg,rgba(0,0,0,.78),transparent);text-align:center;font-size:.61rem;letter-spacing:.08em;font-weight:900;color:#e4c49d}
+.rcv-page-art img{width:100%;height:100%;object-fit:cover;object-position:center}
+html[data-theme="light"] .rcv-page-art{border-color:#d3c5b0;background:#f2f5fb;box-shadow:0 20px 55px rgba(40,87,129,.11)}
+html[data-theme="light"] .rcv-page-art:after{color:#f4e3c9}
+@media(max-width:850px){.rcv-page-hero-grid{grid-template-columns:1fr;gap:25px}.rcv-page-art{height:260px;min-height:200px}}

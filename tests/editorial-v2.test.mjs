@@ -30,3 +30,10 @@ test('marks credential QR as illustration and reserves as unpublished',()=>{
   assert.match(demo,/NOT PUBLISHED/);
   assert.match(demo,/ILLUSTRATIVE IMAGE/);
 });
+
+test('contextual editorial heroes are available on internal routes',()=>{
+  assert.match(demo,/decorateSecondary\(main\)/);
+  assert.match(demo,/\.page-hero > \.container, \.rc-pagehero > \.rc-container/);
+  assert.match(demo,/copper-powder\.webp/);
+  assert.match(css,/\.rcv-page-hero-grid/);
+});

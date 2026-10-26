@@ -85,12 +85,35 @@
       '<div class="rcv-hero-globe" aria-hidden="true"></div><div class="rcv-hero-caption"><span>PHYSICAL METALS</span><b>Source → Evidence → Digital Identity</b><small>Illustrative concept, not custody evidence</small></div>';
     host.classList.add('rcv-scene');
   }
+  function decorateSecondary(main) {
+    // Keep secondary pages faithful to the 51-page brief without copying text from
+    // a screenshot. Preserve the working route, disclosures and content elements.
+    const currentPath = (window.location?.pathname || '/').toLowerCase();
+    if (/\/(admin|participant-portal|redemption-portal)/.test(currentPath)) return;
+    const hero = main.querySelector('.page-hero > .container, .rc-pagehero > .rc-container');
+    if (!hero || hero.classList.contains('rcv-page-hero-grid')) return;
+    let file = 'hero-industrial-still-life.webp';
+    if (/copper|powder/.test(currentPath)) file = 'copper-powder.webp';
+    else if (/nickel|wire/.test(currentPath)) file = 'nickel-wire.webp';
+    else if (/custody|vault|security/.test(currentPath)) file = 'gold-bullion.webp';
+    else if (/industrial-buyer|enterprise|licensing/.test(currentPath)) file = 'energy-assets.webp';
+    else if (/future-asset/.test(currentPath)) file = 'real-estate.webp';
+    else if (/whitepaper|news|resource/.test(currentPath)) file = 'art-collectibles.webp';
+    const copy = document.createElement('div');
+    copy.className = 'rcv-page-copy';
+    while (hero.firstChild) copy.appendChild(hero.firstChild);
+    hero.appendChild(copy);
+    hero.insertAdjacentHTML('beforeend',
+      media(file, 'Editorial concept illustration for ' + document.title, 'rcv-page-art'));
+    hero.classList.add('rcv-page-hero-grid');
+  }
   function enhance() {
     const main=document.querySelector('#main');
     if (!main || main.dataset.rcvEnhanced==='1') return;
     const demo=Boolean(main.querySelector('.asset-orbit'));
     const wp=Boolean(main.querySelector('.rc-hero-visual'));
     if(!demo && !wp) {
+      decorateSecondary(main);
       document.querySelectorAll('.asset-card .visual, .rc-asset-visual').forEach((n,i)=>{
         const type=n.classList.contains('nickel')||n.closest('.nickel')?'nickel-wire.webp':i%2?'nickel-wire.webp':'copper-powder.webp';
         n.classList.add('rcv-inline-asset');n.innerHTML=photo(type,'Illustrative industrial-metal sample');
