@@ -38,7 +38,7 @@
     '</div></section>';
   }
   function metrics(){
-    // Do not show marketing countdowns, discounts, presale supply, or unverifiable coverage ratios.
+    // Do not show artificial urgency timers, discounts, presale supply, or unverifiable coverage ratios.
     return '<section class="rcv-program-bar" aria-label="Documented pre-launch facts"><div class="rcv-wrap"><div class="rcv-bar-title">' +
       '<span class="rcv-mini-label">PRE-LAUNCH · EVIDENCE FIRST</span><strong>Building a documented asset infrastructure</strong></div>' +
       '<div class="rcv-metrics">' +
