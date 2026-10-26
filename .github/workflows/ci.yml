@@ -25,7 +25,7 @@ jobs:
       - name: Generate derived site data
         run: python scripts/generate_site_data.py
       - name: Theme accessibility and persistence tests
-        run: node --test tests/theme-toggle.test.mjs tests/remediation_review.test.mjs tests/reconciliation.test.mjs
+        run: node --test tests/theme-toggle.test.mjs tests/remediation_review.test.mjs tests/reconciliation.test.mjs tests/editorial-v2.test.mjs
       - name: WordPress interface and publication authorization regression
         run: php tests/wordpress_publication_compat.php
       - name: Static audit

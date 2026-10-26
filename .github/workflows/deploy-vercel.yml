@@ -62,7 +62,7 @@ jobs:
         run: |
           set -euo pipefail
           npm run build
-          node --test tests/vercel_api.test.mjs tests/theme-toggle.test.mjs tests/remediation_review.test.mjs tests/reconciliation.test.mjs
+          node --test tests/vercel_api.test.mjs tests/theme-toggle.test.mjs tests/remediation_review.test.mjs tests/reconciliation.test.mjs tests/editorial-v2.test.mjs
           python tests/static_audit.py
           bash tests/smoke.sh
           test -s dist/index.html

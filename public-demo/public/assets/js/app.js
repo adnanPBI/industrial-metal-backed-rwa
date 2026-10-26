@@ -120,6 +120,7 @@
     else body=genericPage(r);
     app.innerHTML=header()+body+footer();
     window.ReserveChainTheme?.refresh();
+    window.ReserveChainEditorial?.enhance();
     wire();
     const p = r.special ? null : r;
     document.title = p ? `${p.title} | ReserveChain.io` : 'ReserveChain.io';
