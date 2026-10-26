@@ -12,6 +12,8 @@ on:
       - "scripts/**"
       - "wordpress/**"
       - "fixtures/**"
+      - ".github/workflows/visual-browser-qa.yml"
+      - "tests/editorial-browser-qa.mjs"
   workflow_dispatch:
 
 permissions:
