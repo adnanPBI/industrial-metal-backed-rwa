@@ -43,3 +43,10 @@ test('physical program cards render as responsive image/copy split components',(
   assert.match(demo,/rcv-asset-copy/);
   assert.match(css,/\.rcv-split-asset/);
 });
+
+test('polished dark luxury styles keep a distinct accessible light-theme override',()=>{
+ const sheet=fs.readFileSync('public-demo/public/assets/css/editorial-v2.css','utf8');
+ assert.match(sheet,/html\[data-theme="light"\] header\.site-header/);
+ assert.match(sheet,/html:not\(\[data-theme="light"\]\) \.card/);
+ assert.match(sheet,/\.rc-mega/);
+});

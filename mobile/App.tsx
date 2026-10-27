@@ -15,7 +15,7 @@ export default function App() {
   return (
     <SafeAreaView style={s.safe}>
       <ScrollView contentContainerStyle={s.wrap}>
-        <Text style={s.kicker}>RESERVECHAIN.IO</Text>
+        <Text style={s.kicker}>RESERVECHAIN.IO · PRE-LAUNCH</Text>
         <Text style={s.h1}>Industrial asset infrastructure</Text>
         <Text style={s.notice}>Mode: {String(mode).toUpperCase()} · No tokens are offered or sold through this application.</Text>
         {assets.map(a => (
@@ -40,12 +40,12 @@ export default function App() {
 }
 
 const s = StyleSheet.create({
-  safe: { flex: 1, backgroundColor: '#020916' },
+  safe: { flex: 1, backgroundColor: '#07090e' },
   wrap: { padding: 24, gap: 16 },
-  kicker: { color: '#77e0ff', letterSpacing: 3, fontWeight: '800' },
-  h1: { color: '#fff', fontSize: 38, fontWeight: '700' },
-  notice: { color: '#b8cbe0', lineHeight: 21, backgroundColor: 'rgba(20,72,132,0.22)', borderColor: 'rgba(119,224,255,0.24)', borderWidth: 1, borderRadius: 14, padding: 14 },
-  card: { backgroundColor: 'rgba(10,43,84,0.72)', borderWidth: 1, borderColor: 'rgba(119,224,255,0.22)', borderRadius: 20, padding: 18, shadowColor: '#000', shadowOpacity: 0.32, shadowRadius: 18, shadowOffset: { width: 0, height: 10 }, elevation: 6 },
-  h2: { color: '#fff', fontSize: 20, fontWeight: '700', marginBottom: 9 },
-  body: { color: '#a9bfd4', marginTop: 4 }
+  kicker: { color: '#f4d086', letterSpacing: 3, fontWeight: '800' },
+  h1: { color: '#fbf6ee', fontSize: 36, fontWeight: '700' },
+  notice: { color: '#e6dccb', lineHeight: 21, backgroundColor: 'rgba(216,158,72,0.12)', borderColor: 'rgba(224,168,88,0.34)', borderWidth: 1, borderRadius: 14, padding: 14 },
+  card: { backgroundColor: 'rgba(18,24,35,0.92)', borderWidth: 1, borderColor: 'rgba(224,168,88,0.28)', borderRadius: 20, padding: 18, shadowColor: '#000', shadowOpacity: 0.32, shadowRadius: 18, shadowOffset: { width: 0, height: 10 }, elevation: 6 },
+  h2: { color: '#ffdfb5', fontSize: 20, fontWeight: '700', marginBottom: 9 },
+  body: { color: '#c9d2dd', marginTop: 4 }
 });
