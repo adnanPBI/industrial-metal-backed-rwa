@@ -42,7 +42,7 @@
   function footer(){
     const groups = navGroups.slice(0,4);
     return `<footer><div class="container"><div class="footer-grid">
-      <div class="footer-brand"><img src="/assets/img/reservechain-logo.svg" alt="ReserveChain.io"><p class="fineprint">Institutional real-world asset infrastructure in development. Evidence, status and availability remain subject to approved source records and legal review.</p></div>
+      <div class="footer-brand"><img src="/assets/img/reservechain-wordmark.svg" data-theme-logo data-dark-src="/assets/img/reservechain-wordmark.svg" data-light-src="/assets/img/reservechain-wordmark-light.svg" alt="ReserveChain.io"><p class="fineprint">Institutional real-world asset infrastructure in development. Evidence, status and availability remain subject to approved source records and legal review.</p></div>
       ${groups.map(([g,keys])=>`<div class="footer-col"><h4>${g}</h4>${keys.slice(0,6).map(k=>{const p=byKey(k);return link(p.slug,p.name)}).join('')}</div>`).join('')}
     </div><div class="footer-bottom"><span>© 2026 ReserveChain.io - Pre-launch technical demonstration.</span><span>${link('privacy','Privacy')} · ${link('terms','Terms')} · ${link('risk-disclosure','Risk Disclosure')} · ${link('anti-fraud','Anti-Fraud')}</span></div></div></footer>`;
   }

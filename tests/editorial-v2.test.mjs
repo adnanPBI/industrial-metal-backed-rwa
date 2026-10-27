@@ -50,3 +50,11 @@ test('polished dark luxury styles keep a distinct accessible light-theme overrid
  assert.match(sheet,/html:not\(\[data-theme="light"\]\) \.card/);
  assert.match(sheet,/\.rc-mega/);
 });
+
+test('footer uses theme-sensitive horizontal wordmark, not a tall logo panel',()=>{
+ const app=fs.readFileSync('public-demo/public/assets/js/app.js','utf8');
+ const footer=fs.readFileSync('wordpress/wp-content/themes/reservechain/footer.php','utf8');
+ assert.match(app,/footer-brand"><img src="\/assets\/img\/reservechain-wordmark\.svg" data-theme-logo/);
+ assert.match(footer,/class="rc-footlogo"[^>]*reservechain-wordmark\.svg/);
+ assert.match(footer,/data-light-src/);
+});
