@@ -1,0 +1,38 @@
+name: Install supplied ReserveChain 3D cube vector identity
+on:
+  push:
+    branches: [main]
+    paths:
+      - "scripts/brand-source/**"
+      - "scripts/install_brand_assets.py"
+      - ".github/workflows/install-brand-assets.yml"
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: reservechain-brand-assets
+  cancel-in-progress: false
+jobs:
+  install:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - name: Decode pinned design assets and validate checksums
+        run: python scripts/install_brand_assets.py
+      - name: Commit vector files to both site targets
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add public-demo/public/assets/img/reservechain-logo.svg public-demo/public/assets/img/reservechain-wordmark.svg public-demo/public/assets/img/reservechain-wordmark-light.svg
+          git add wordpress/wp-content/themes/reservechain/assets/img/reservechain-logo.svg wordpress/wp-content/themes/reservechain/assets/img/reservechain-wordmark.svg wordpress/wp-content/themes/reservechain/assets/img/reservechain-wordmark-light.svg
+          if git diff --cached --quiet; then echo "Brand assets already current"; else
+            git commit -m "assets(brand): install verified owner-supplied 3D cube logos and dual-mode wordmarks"
+            git pull --rebase origin main
+            git push origin HEAD:main
+          fi
