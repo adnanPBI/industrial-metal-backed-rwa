@@ -1,5 +1,136 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 420" role="img" aria-labelledby="t d">
-<title id="t">ReserveChain</title><desc id="d">Blue glass ReserveChain geometric asset mark</desc>
-<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#59baff"/><stop offset=".5" stop-color="#0b4d8a"/><stop offset="1" stop-color="#e6b955"/></linearGradient><filter id="s"><feDropShadow dx="0" dy="16" stdDeviation="18" flood-color="#02060c" flood-opacity=".55"/></filter></defs>
-<rect width="640" height="420" rx="52" fill="#07111d"/><g filter="url(#s)" transform="translate(320 188)"><path d="M0-134 134-67 134 67 0 134-134 67-134-67Z" fill="#0b1b2d" stroke="url(#g)" stroke-width="7"/><path d="M0-134 0 134M-134-67 134 67M134-67-134 67" stroke="#4aa8ff" stroke-opacity=".55" stroke-width="4"/><path d="m0-74 58 29v58L0 42-58 13v-58Z" fill="url(#g)" opacity=".9"/><circle cx="-134" cy="-67" r="13" fill="#e6b955"/><circle cx="134" cy="-67" r="13" fill="#e6b955"/><circle cx="134" cy="67" r="13" fill="#4aa8ff"/><circle cx="-134" cy="67" r="13" fill="#4aa8ff"/></g><text x="320" y="382" text-anchor="middle" fill="#eef6ff" font-family="Georgia,serif" font-size="48" letter-spacing="1">Reserve<tspan fill="#e6b955">Chain</tspan></text>
+<title id="t">ReserveChain.io</title>
+<desc id="d">ReserveChain 3D isometric gold and obsidian-navy cube emblem with copper powder, nickel wire, gold bullion, emerald and fine art</desc>
+<defs>
+  <linearGradient id="rcGold" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0%" stop-color="#FFF2B8"/>
+    <stop offset="35%" stop-color="#E6BA56"/>
+    <stop offset="70%" stop-color="#C48B28"/>
+    <stop offset="100%" stop-color="#8A5A10"/>
+  </linearGradient>
+  <linearGradient id="rcGoldBright" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0%" stop-color="#FFF6CC"/>
+    <stop offset="50%" stop-color="#E5B852"/>
+    <stop offset="100%" stop-color="#9E6B18"/>
+  </linearGradient>
+  <linearGradient id="rcNavyStrut" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0%" stop-color="#22354E"/>
+    <stop offset="50%" stop-color="#0E1929"/>
+    <stop offset="100%" stop-color="#050A12"/>
+  </linearGradient>
+  <linearGradient id="rcCopper" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0%" stop-color="#F5A673"/>
+    <stop offset="50%" stop-color="#C86832"/>
+    <stop offset="100%" stop-color="#6E2E10"/>
+  </linearGradient>
+  <linearGradient id="rcNickel" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0%" stop-color="#8D99A6"/>
+    <stop offset="35%" stop-color="#EEF3F7"/>
+    <stop offset="65%" stop-color="#B0BCC8"/>
+    <stop offset="100%" stop-color="#5E6973"/>
+  </linearGradient>
+  <linearGradient id="rcEmerald" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0%" stop-color="#6FF7B8"/>
+    <stop offset="45%" stop-color="#14B86E"/>
+    <stop offset="100%" stop-color="#055230"/>
+  </linearGradient>
+  <radialGradient id="rcSphere" cx="35%" cy="30%" r="65%">
+    <stop offset="0%" stop-color="#FFF9D6"/>
+    <stop offset="45%" stop-color="#E5B54D"/>
+    <stop offset="85%" stop-color="#9E6A14"/>
+    <stop offset="100%" stop-color="#5E3B06"/>
+  </radialGradient>
+  <filter id="rcShadow" x="-15%" y="-15%" width="130%" height="135%">
+    <feDropShadow dx="0" dy="8" stdDeviation="8" flood-color="#000000" flood-opacity="0.55"/>
+  </filter>
+</defs>
+<rect width="640" height="420" rx="44" fill="#070A10" stroke="url(#rcGold)" stroke-width="2"/>
+<g transform="translate(320, 152) scale(1.08)">
+
+  <!-- Outer Hexagonal Strut Ring (Alternating Gold & Navy 3D Bars) -->
+  <g filter="url(#rcShadow)">
+    <!-- Top-Left Gold Strut -->
+    <polygon points="-8,-112 -98,-60 -86,-46 4,-98" fill="url(#rcGold)" stroke="#FFF2B8" stroke-width="0.8"/>
+    <!-- Top-Right Navy Strut -->
+    <polygon points="8,-112 98,-60 86,-46 -4,-98" fill="url(#rcNavyStrut)" stroke="url(#rcGold)" stroke-width="1"/>
+    <!-- Right Vertical Gold Strut -->
+    <polygon points="94,-46 108,-46 108,52 94,52" fill="url(#rcGold)" stroke="#FFF2B8" stroke-width="0.8"/>
+    <!-- Bottom-Right Navy Strut -->
+    <polygon points="98,60 8,112 -4,98 86,46" fill="url(#rcNavyStrut)" stroke="url(#rcGold)" stroke-width="1"/>
+    <!-- Bottom-Left Navy Strut -->
+    <polygon points="-98,60 -8,112 4,98 -86,46" fill="url(#rcNavyStrut)" stroke="url(#rcGold)" stroke-width="1"/>
+    <!-- Left Vertical Navy Strut -->
+    <polygon points="-108,-46 -94,-46 -94,52 -108,52" fill="url(#rcNavyStrut)" stroke="url(#rcGold)" stroke-width="1"/>
+
+    <!-- Inner Isometric Vault Cube Faces -->
+    <!-- Top Face (Obsidian Navy Vault Floor) -->
+    <polygon points="0,-84 74,-42 0,0 -74,-42" fill="#0B1320" stroke="url(#rcGold)" stroke-width="3.2"/>
+    <!-- Left Face (Copper & Art Vault Compartment) -->
+    <polygon points="-74,-42 0,0 0,86 -74,44" fill="#080E18" stroke="url(#rcGold)" stroke-width="3.2"/>
+    <!-- Right Face (Emerald & Nickel Wire Compartment) -->
+    <polygon points="0,0 74,-42 74,44 0,86" fill="#060A12" stroke="url(#rcGold)" stroke-width="3.2"/>
+
+    <!-- TOP FACE CONTENT: 3D Sovereign Gold Bullion Bar -->
+    <g>
+      <polygon points="0,-64 34,-44 0,-24 -34,-44" fill="url(#rcGoldBright)" stroke="#FFF7D6" stroke-width="0.8"/>
+      <polygon points="-34,-44 0,-24 0,-13 -42,-35" fill="#B87E1E"/>
+      <polygon points="34,-44 0,-24 0,-13 42,-35" fill="#8D5B0E"/>
+      <polygon points="0,-58 22,-45 0,-32 -22,-45" fill="#FFE89E" opacity="0.65"/>
+    </g>
+
+    <!-- LEFT FACE TOP CONTENT: Framed Landscape Art -->
+    <g>
+      <polygon points="-64,-31 -10,0 -10,36 -64,5" fill="url(#rcGold)" stroke="#FFF2B8" stroke-width="0.7"/>
+      <polygon points="-58,-24 -16,0 -16,28 -58,4" fill="#12263A"/>
+      <polygon points="-58,-8 -38,-4 -26,8 -16,6 -16,28 -58,4" fill="#2A4B3C"/>
+      <circle cx="-28" cy="-4" r="4" fill="#FFE599" opacity="0.85"/>
+    </g>
+
+    <!-- LEFT FACE BOTTOM CONTENT: 3 Copper Tubes + Ultrafine Copper Powder Cone -->
+    <g>
+      <!-- Copper Cylinders -->
+      <ellipse cx="-54" cy="26" rx="6" ry="4" fill="#3B1607" stroke="url(#rcCopper)" stroke-width="2.2"/>
+      <ellipse cx="-41" cy="33" rx="6" ry="4" fill="#3B1607" stroke="url(#rcCopper)" stroke-width="2.2"/>
+      <ellipse cx="-48" cy="19" rx="6" ry="4" fill="#3B1607" stroke="url(#rcCopper)" stroke-width="2.2"/>
+      <!-- Glowing Copper Powder Cone (99.9999%) -->
+      <polygon points="-22,28 -6,66 -38,48" fill="url(#rcCopper)" stroke="#F7B385" stroke-width="0.6"/>
+      <circle cx="-22" cy="46" r="1.2" fill="#FFD1B3"/>
+      <circle cx="-18" cy="54" r="1" fill="#FFD1B3"/>
+      <circle cx="-27" cy="49" r="1" fill="#FFD1B3"/>
+    </g>
+
+    <!-- RIGHT FACE TOP CONTENT: Faceted Emerald Gemstone -->
+    <g>
+      <polygon points="36,-16 58,-12 64,2 36,28 12,14 18,-2" fill="url(#rcEmerald)" stroke="#A7FCD6" stroke-width="0.9"/>
+      <polygon points="36,-10 50,-7 54,2 36,12 22,5 25,-3" fill="#47E89E" opacity="0.65"/>
+      <path d="M18,-2 L36,12 L58,-12 M36,12 L36,28" stroke="#BDFCE0" stroke-width="0.8" fill="none"/>
+    </g>
+
+    <!-- RIGHT FACE BOTTOM CONTENT: Ultrafine Nickel Wire Spool (0.025 mm) -->
+    <g>
+      <path d="M18,46 L52,27 A10,16 -28 0,1 62,48 L28,67 Z" fill="url(#rcNickel)" stroke="#FFFFFF" stroke-width="0.7"/>
+      <path d="M24,43 L34,63 M31,39 L41,59 M38,35 L48,55 M45,31 L55,51" stroke="#6E7B87" stroke-width="1"/>
+      <ellipse cx="22" cy="56" rx="8" ry="13" transform="rotate(-28 22 56)" fill="#18222E" stroke="url(#rcNickel)" stroke-width="2.2"/>
+      <ellipse cx="22" cy="56" rx="3.5" ry="6" transform="rotate(-28 22 56)" fill="#070B10" stroke="#9BA8B5" stroke-width="1"/>
+    </g>
+
+    <!-- 6 Gold Corner Connector Spheres -->
+    <circle cx="0" cy="-106" r="10.5" fill="url(#rcSphere)"/>
+    <circle cx="96" cy="-52" r="10.5" fill="url(#rcSphere)"/>
+    <circle cx="96" cy="54" r="10.5" fill="url(#rcSphere)"/>
+    <circle cx="0" cy="106" r="10.5" fill="url(#rcSphere)"/>
+    <circle cx="-96" cy="54" r="10.5" fill="url(#rcSphere)"/>
+    <circle cx="-96" cy="-52" r="10.5" fill="url(#rcSphere)"/>
+  </g>
+
+</g>
+<text x="320" y="342" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-weight="700" font-size="54" letter-spacing="0.5">
+  <tspan fill="#E8EEF5">Reserve</tspan><tspan fill="url(#rcGold)">Chain</tspan><tspan fill="#9FB0C2" font-size="34">.io</tspan>
+</text>
+<line x1="110" y1="364" x2="306" y2="364" stroke="url(#rcGold)" stroke-width="1.5"/>
+<polygon points="320,357 326,364 320,371 314,364" fill="url(#rcGold)"/>
+<line x1="334" y1="364" x2="530" y2="364" stroke="url(#rcGold)" stroke-width="1.5"/>
+<text x="320" y="392" text-anchor="middle" fill="#D5C3A1" font-family="Inter, Arial, sans-serif" font-weight="700" font-size="13.5" letter-spacing="3.2">
+  THE INFRASTRUCTURE FOR REAL-WORLD ASSETS.
+</text>
 </svg>
