@@ -6,8 +6,17 @@
   "use strict";
   const scriptUrl = document.currentScript && document.currentScript.src;
   const mediaRoot = scriptUrl ? new URL("../img/editorial/", scriptUrl).pathname : "/assets/img/editorial/";
-  const photo = (file, alt, opts = "") =>
-    '<img src="' + mediaRoot + file + '" loading="lazy" decoding="async" alt="' + alt + '" ' + opts + ' onerror="this.hidden=true;this.parentElement.classList.add(\'rcv-image-fallback\')" />';
+  const photo = (file, alt, opts = "") => {
+    const isLight = document.documentElement.dataset.theme === "light";
+    const hasLightVariant = file === "hero-industrial-still-life.webp";
+    const darkSrc = mediaRoot + file;
+    const lightSrc = hasLightVariant ? mediaRoot + "hero-industrial-still-life-light.webp" : darkSrc;
+    const activeSrc = (isLight && hasLightVariant) ? lightSrc : darkSrc;
+    const themeAttrs = hasLightVariant
+      ? ' data-theme-logo data-dark-src="' + darkSrc + '" data-light-src="' + lightSrc + '"'
+      : "";
+    return '<img src="' + activeSrc + '"' + themeAttrs + ' loading="lazy" decoding="async" alt="' + alt + '" ' + opts + ' onerror="this.hidden=true;this.parentElement.classList.add(\'rcv-image-fallback\')" />';
+  };
   const future = [
     {title:"Gold Bullion",desc:"Precious metals, subject to future program review.",img:"gold-bullion.webp",symbol:"AU"},
     {title:"Energy Assets",desc:"Industrial energy assets as a prospective category.",img:"energy-assets.webp",symbol:"EN"},
@@ -118,6 +127,7 @@
         const type=n.classList.contains('nickel')||n.closest('.nickel')?'nickel-wire.webp':i%2?'nickel-wire.webp':'copper-powder.webp';
         n.classList.add('rcv-inline-asset');n.innerHTML=photo(type,'Illustrative industrial-metal sample');
       });
+      window.ReserveChainTheme?.refresh?.();
       return;
     }
     main.dataset.rcvEnhanced='1';
@@ -152,6 +162,7 @@
     // Hide it where the explicit "not published" evidence-status panel now replaces it.
     const oldDemoPair=main.querySelector('.framework-chart')?.closest('.section');
     if(oldDemoPair)oldDemoPair.classList.add('rcv-legacy-evidence-hidden');
+    window.ReserveChainTheme?.refresh?.();
   }
   window.ReserveChainEditorial={enhance};
   if (document.readyState==='loading') document.addEventListener('DOMContentLoaded',enhance);

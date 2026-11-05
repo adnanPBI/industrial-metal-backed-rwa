@@ -58,3 +58,22 @@ test('footer uses theme-sensitive horizontal wordmark, not a tall logo panel',()
  assert.match(footer,/class="rc-footlogo"[^>]*reservechain-wordmark\.svg/);
  assert.match(footer,/data-light-src/);
 });
+
+test('precision-machined metallic edge bezel system styles all editorial image containers',()=>{
+ const sheet=fs.readFileSync('public-demo/public/assets/css/editorial-v2.css','utf8');
+ assert.match(sheet,/--rcv-edge-gold:/);
+ assert.match(sheet,/--rcv-edge-copper:/);
+ assert.match(sheet,/--rcv-edge-nickel:/);
+ assert.match(sheet,/\.asset-card\.copper \.rcv-inline-asset/);
+ assert.match(sheet,/\.asset-card\.nickel \.rcv-inline-asset/);
+});
+
+test('soft white theme overrides hero section and swaps main still-life image',()=>{
+ const sheet=fs.readFileSync('public-demo/public/assets/css/editorial-v2.css','utf8');
+ const js=fs.readFileSync('public-demo/public/assets/js/editorial-v2.js','utf8');
+ assert.match(sheet,/html\[data-theme="light"\] \.hero:has\(\.rcv-scene\)/);
+ assert.match(sheet,/html\[data-theme="light"\] \.rcv-scene/);
+ assert.match(sheet,/html\[data-theme="light"\] \.rcv-hero-caption/);
+ assert.match(js,/hero-industrial-still-life-light\.webp/);
+ assert.match(js,/data-light-src/);
+});
