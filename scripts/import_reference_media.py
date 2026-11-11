@@ -136,8 +136,8 @@ def main():
         path.parent.mkdir(parents=True,exist_ok=True)
         path.write_text(json.dumps(manifest,indent=2,ensure_ascii=False)+'\n',encoding='utf-8')
     print(f"IMPORTED_COUNT={found} EXPECTED={len(TARGETS)}")
-    if found < 3:
-        print("At least 3 source media assets are required; do not publish an incomplete gallery",file=sys.stderr)
+    if found < len(TARGETS):
+        print("All 2 source media assets are required; do not publish an incomplete gallery",file=sys.stderr)
         return 1
     return 0
 

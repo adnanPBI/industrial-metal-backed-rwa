@@ -1,0 +1,80 @@
+name: ReserveChain Solidity tests and Sepolia demonstration
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "contracts/**"
+      - ".github/workflows/sepolia-contracts.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  solidity-tests:
+    name: Compile and test ERC-20 + factory
+    runs-on: ubuntu-24.04
+    defaults:
+      run:
+        working-directory: contracts
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - run: npm install --no-audit --no-fund
+      - run: npm run compile
+      - run: npm test
+      - name: Test summary
+        run: echo "Hardhat contract tests passed; no Mainnet deployment permitted." >> "$GITHUB_STEP_SUMMARY"
+
+  deploy-sepolia:
+    name: Sepolia demonstration - two metals, zero supply
+    needs: solidity-tests
+    if: github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, '[deploy-sepolia]')
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+    environment: sepolia-testnet
+    env:
+      SEPOLIA_RPC_URL: ${{ secrets.SEPOLIA_RPC_URL }}
+      SEPOLIA_DEPLOYER_PRIVATE_KEY: ${{ secrets.SEPOLIA_DEPLOYER_PRIVATE_KEY }}
+      SEPOLIA_ADMIN_ADDRESS: ${{ vars.SEPOLIA_ADMIN_ADDRESS }}
+    defaults:
+      run:
+        working-directory: contracts
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Confirm secure Sepolia deployment prerequisites
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ -z "${SEPOLIA_RPC_URL:-}" ] || [ -z "${SEPOLIA_DEPLOYER_PRIVATE_KEY:-}" ]; then
+            echo "::error::Sepolia deployment BLOCKED: configure GitHub Actions secrets SEPOLIA_RPC_URL and SEPOLIA_DEPLOYER_PRIVATE_KEY on a dedicated funded testnet wallet. Do not paste keys into chat or repository."
+            exit 1
+          fi
+          echo "Sepolia RPC and signer secrets are present (not printed)."
+      - run: npm install --no-audit --no-fund
+      - name: Re-run Solidity verification gates
+        run: |
+          npm run compile
+          npm test
+      - name: Deploy and verify live Sepolia readbacks
+        run: npm run deploy:sepolia
+      - name: Commit public addresses and transaction receipts
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add contracts/deployments/sepolia-demo.json
+          git commit -m "docs(testnet): record verified Sepolia Copper/Nickel deployments"
+          git pull --rebase origin main
+          git push origin HEAD:main
+          echo "Sepolia deployment manifest: contracts/deployments/sepolia-demo.json" >> "$GITHUB_STEP_SUMMARY"

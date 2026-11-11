@@ -3,9 +3,10 @@
   "private": true,
   "version": "0.2.0",
   "scripts": {
-    "compile": "hardhat compile",
-    "test": "hardhat test",
-    "coverage": "hardhat coverage"
+    "compile": "hardhat compile --config hardhat.config.cjs",
+    "test": "hardhat test --config hardhat.config.cjs",
+    "coverage": "hardhat coverage --config hardhat.config.cjs",
+    "deploy:sepolia": "hardhat run --config hardhat.config.cjs scripts/deploy-sepolia.cjs --network sepolia"
   },
   "devDependencies": {
     "@nomicfoundation/hardhat-toolbox": "6.1.0",
