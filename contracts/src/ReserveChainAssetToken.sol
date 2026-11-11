@@ -18,7 +18,7 @@ contract ReserveChainAssetToken is ERC20Capped, ERC20Pausable, AccessControl {
 
     bytes32 public immutable programId;
 
-    event ReserveChainMint(address indexed to, uint256 amount, bytes32 indexed programId, bytes32 reference);
+    event ReserveChainMint(address indexed to, uint256 amount, bytes32 indexed programId, bytes32 sourceReference);
     event RedemptionBurn(address indexed from, uint256 amount, bytes32 indexed programId, bytes32 redemptionReference);
 
     constructor(
