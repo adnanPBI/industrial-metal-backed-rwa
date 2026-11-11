@@ -21,6 +21,12 @@ await audit('dark desktop 1440px',async()=>{
   assert.equal(await page.locator('.rcv-step').count(),6);
   assert.equal(await page.locator('.rcv-evidence-grid').count(),1);
   assert.equal(await page.locator('.rcv-split-asset').count(),2);
+  const visibleText=await page.locator('body').innerText();
+  assert.doesNotMatch(visibleText,/Gold Bullion|Energy Assets|Real Estate|Art & Collectibles|Precious Metals|Gemstones/i);
+  const allImg=await page.locator('img').evaluateAll(images=>images.map(x=>x.getAttribute('src')||''));
+  assert.ok(allImg.every(src=>!/gold-bullion|energy-assets|real-estate|art-collectibles|hero-industrial-still-life/i.test(src)),allImg.join(','));
+  assert.ok(allImg.some(src=>src.includes('copper-powder.webp')));
+  assert.ok(allImg.some(src=>src.includes('nickel-wire.webp')));
   assert.equal(await page.evaluate(()=>document.documentElement.dataset.theme),'dark');
   for(const image of await page.locator('.rcv-future-grid img, .rcv-scene img, .rcv-split-asset img').all()){
     await image.scrollIntoViewIfNeeded();
