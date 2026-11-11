@@ -12,5 +12,6 @@ module.exports = {
     hardhat: { chainId: 31337 },
     sepolia: { url: rpc, accounts: key ? [key] : [], chainId: 11155111, timeout: 90000 }
   },
+  paths: { sources: './src', tests: './test', cache: './cache', artifacts: './artifacts' },
   etherscan: { apiKey: process.env.ETHERSCAN_API_KEY || '' }
 };
