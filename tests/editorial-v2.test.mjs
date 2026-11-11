@@ -77,3 +77,14 @@ test('both color themes retain Copper and Nickel hero artwork',()=>{
  assert.match(js,/rcv-two-metals/);
  assert.doesNotMatch(js,/hero-industrial-still-life/);
 });
+
+test('Copper and Nickel branding replaces multi-asset cube artwork',()=>{
+ for(const base of ['public-demo/public/assets/img','wordpress/wp-content/themes/reservechain/assets/img']){
+   for(const name of ['reservechain-logo.svg','reservechain-wordmark.svg','reservechain-wordmark-light.svg']){
+     const svg=fs.readFileSync(base+'/'+name,'utf8');
+     assert.match(svg,/>Cu</);
+     assert.match(svg,/>Ni</);
+     assert.doesNotMatch(svg,/gold bullion|gemstone|energy assets|real estate|art.*collectibles/i);
+   }
+ }
+});
