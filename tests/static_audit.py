@@ -16,6 +16,24 @@ assert 'No tokens are being offered or sold' in public
 assert 'ILLUSTRATIVE / DEMO DATA' in public
 assert 'No live reserve claim published' in public
 assert 'ReserveChain Admin Demonstration' in public
+# The contest holder requires COPPER POWDER / NICKEL WIRE only.
+# Decorative metallic CSS accents are not product imagery or asset programs.
+assert data['settings']['future_categories']==['Copper Powder Evidence','Nickel Wire Evidence']
+for asset in data['assets']:
+    assert asset['material'] in ('Copper','Nickel')
+for candidate in (root/'public-demo/public/assets/js/app.js',
+                  root/'public-demo/public/assets/js/editorial-v2.js',
+                  root/'wordpress/wp-content/themes/reservechain/assets/js/editorial-v2.js',
+                  root/'scripts/generate_site_data.py'):
+    content=candidate.read_text(encoding='utf-8').lower()
+    for rejected in ('gold bullion','energy assets','real estate','art & collectibles',
+                     'precious metals','gemstones','gold-bullion.webp','energy-assets.webp',
+                     'real-estate.webp','art-collectibles.webp','hero-industrial-still-life'):
+        assert rejected not in content, (str(candidate), rejected)
+for folder in (root/'public-demo/public/assets/img/editorial',
+               root/'wordpress/wp-content/themes/reservechain/assets/img/editorial'):
+    names={f.name for f in folder.iterdir() if f.is_file()}
+    assert names=={'copper-powder.webp','nickel-wire.webp'}, (str(folder),names)
 css=(root/'public-demo/public/assets/css/app.css').read_text()
 assert 'ReserveChain Blue Glass v0.2' in css
 assert '--glass-blue:#4aa8ff' in css
