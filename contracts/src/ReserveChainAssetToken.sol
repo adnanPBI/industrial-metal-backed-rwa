@@ -57,7 +57,7 @@ contract ReserveChainAssetToken is ERC20Capped, ERC20Pausable, AccessControl {
 
     function _update(address from, address to, uint256 value)
         internal
-        override(ERC20, ERC20Capped, ERC20Pausable)
+        override(ERC20Capped, ERC20Pausable)
     {
         super._update(from, to, value);
     }
