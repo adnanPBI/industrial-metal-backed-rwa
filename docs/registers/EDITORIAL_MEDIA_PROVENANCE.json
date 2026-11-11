@@ -1,15 +1,5 @@
 [
   {
-    "filename": "hero-industrial-still-life.webp",
-    "source_url": "https://reservechain.io/wp-content/plugins/reservechain-platform/assets/media/home-hero-futuristic-20260922-1672.jpg",
-    "source_alt": "Futuristic illustration of ultrafine copper powder, nickel wire, gold, contemporary art and gemstones.",
-    "source_page": "https://reservechain.io/assets/explore",
-    "width": 1250,
-    "height": 703,
-    "usage": "Illustrative visual only, not asset/title/custody/reserve evidence",
-    "publication_rights": "Owner to confirm before client production"
-  },
-  {
     "filename": "copper-powder.webp",
     "source_url": "https://reservechain.io/wp-content/themes/reservechain/assets/media/buy-copper-bowl-1920.jpg",
     "source_alt": "Ultrafine copper powder asset program — mound of high-purity copper powder in a dark ceramic bowl",
@@ -26,46 +16,6 @@
     "source_page": "https://reservechain.io/assets/nickel-wire",
     "width": 1162,
     "height": 780,
-    "usage": "Illustrative visual only, not asset/title/custody/reserve evidence",
-    "publication_rights": "Owner to confirm before client production"
-  },
-  {
-    "filename": "gold-bullion.webp",
-    "source_url": "https://reservechain.io/wp-content/uploads/2026/09/gold-bars.jpg",
-    "source_alt": "Gold reserves visual for a future category, not an offered program today.",
-    "source_page": "https://reservechain.io/assets/explore",
-    "width": 800,
-    "height": 600,
-    "usage": "Illustrative visual only, not asset/title/custody/reserve evidence",
-    "publication_rights": "Owner to confirm before client production"
-  },
-  {
-    "filename": "energy-assets.webp",
-    "source_url": "https://reservechain.io/wp-content/uploads/2026/09/energy.jpg",
-    "source_alt": "Energy assets visual for a future category, not an offered program today.",
-    "source_page": "https://reservechain.io/assets/explore",
-    "width": 800,
-    "height": 600,
-    "usage": "Illustrative visual only, not asset/title/custody/reserve evidence",
-    "publication_rights": "Owner to confirm before client production"
-  },
-  {
-    "filename": "real-estate.webp",
-    "source_url": "https://reservechain.io/wp-content/uploads/2026/09/real-estate.jpg",
-    "source_alt": "Real estate visual for a future category, not an offered program today.",
-    "source_page": "https://reservechain.io/assets/explore",
-    "width": 800,
-    "height": 600,
-    "usage": "Illustrative visual only, not asset/title/custody/reserve evidence",
-    "publication_rights": "Owner to confirm before client production"
-  },
-  {
-    "filename": "art-collectibles.webp",
-    "source_url": "https://reservechain.io/wp-content/uploads/2026/09/art.jpg",
-    "source_alt": "Art and collectibles visual for a future category, not an offered program today.",
-    "source_page": "https://reservechain.io/assets/explore",
-    "width": 800,
-    "height": 600,
     "usage": "Illustrative visual only, not asset/title/custody/reserve evidence",
     "publication_rights": "Owner to confirm before client production"
   }
