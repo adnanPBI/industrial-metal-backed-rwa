@@ -32,6 +32,7 @@ jobs:
       VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
       VERCEL_SCOPE: ${{ vars.VERCEL_SCOPE || 'adnans-projects-1993fd6c' }}
       VERCEL_PROJECT_NAME: industrial-metal-backed-rwa
+      VERCEL_TEAM_ID: team_GI0H1MJPmSQhzRXjQ1DMbK27
 
     steps:
       - name: Checkout source
@@ -73,19 +74,36 @@ jobs:
       - name: Install Vercel CLI
         run: npm install --global vercel@latest --no-audit --no-fund
 
-      - name: Verify Vercel access
+      - name: Bind the exact existing Vercel team and production project
         shell: bash
         run: |
           set -euo pipefail
-          vercel whoami --token="$VERCEL_TOKEN"
-          echo "Deploying to scope: $VERCEL_SCOPE"
+          vercel whoami --scope="$VERCEL_SCOPE"
+          curl --fail-with-body --silent --show-error \
+            --header "Authorization: Bearer $VERCEL_TOKEN" \
+            "https://api.vercel.com/v9/projects/$VERCEL_PROJECT_NAME?teamId=$VERCEL_TEAM_ID" \
+          | node -e '
+            const fs=require("node:fs");
+            const p=JSON.parse(fs.readFileSync(0,"utf8"));
+            const team=process.env.VERCEL_TEAM_ID;
+            const name=process.env.VERCEL_PROJECT_NAME;
+            if(p.name!==name || p.accountId!==team || !/^prj_[A-Za-z0-9]+$/.test(p.id)){
+              console.error("Refusing deployment: Vercel project/team identity mismatch");
+              process.exit(1);
+            }
+            fs.mkdirSync(".vercel",{recursive:true});
+            fs.writeFileSync(".vercel/project.json",JSON.stringify({orgId:team,projectId:p.id})+"\n");
+            fs.appendFileSync(process.env.GITHUB_ENV,"VERCEL_ORG_ID="+team+"\nVERCEL_PROJECT_ID="+p.id+"\n");
+            console.log("Verified existing production target: "+p.name+" / "+team+" / "+p.id);
+          '
+          vercel project inspect --non-interactive --scope="$VERCEL_SCOPE"
 
       - name: Deploy to production
         id: deployment
         shell: bash
         run: |
           set -euo pipefail
-          deployment_output=$(vercel deploy --prod --yes --token="$VERCEL_TOKEN" --scope="$VERCEL_SCOPE")
+          deployment_output=$(vercel deploy --prod --yes --scope="$VERCEL_SCOPE" --project="$VERCEL_PROJECT_ID")
           printf '%s\n' "$deployment_output"
           url=$(printf '%s\n' "$deployment_output" | grep -Eo 'https://[^[:space:]]+\.vercel\.app[^[:space:]]*' | tail -n 1 || true)
           if [ -z "$url" ]; then
@@ -93,6 +111,19 @@ jobs:
             exit 1
           fi
           echo "url=$url" >> "$GITHUB_OUTPUT"
+          host=$(printf '%s' "$url" | sed -E 's#^https?://([^/]+).*#\1#')
+          curl --fail-with-body --silent --show-error \
+            --header "Authorization: Bearer $VERCEL_TOKEN" \
+            "https://api.vercel.com/v13/deployments/$host?teamId=$VERCEL_TEAM_ID" \
+          | node -e '
+            const fs=require("node:fs");
+            const d=JSON.parse(fs.readFileSync(0,"utf8"));
+            if(d.projectId!==process.env.VERCEL_PROJECT_ID || d.target!=="production" || d.readyState!=="READY"){
+              console.error("Vercel deployment verification failed: project, target or readiness mismatch");
+              process.exit(1);
+            }
+            console.log("Verified production deployment: "+d.id+" / "+d.projectId+" / "+d.readyState);
+          '
           {
             echo "### ReserveChain Vercel deployment"
             echo ""
@@ -108,7 +139,7 @@ jobs:
           set -euo pipefail
           code=$(curl --silent --show-error --output "$RUNNER_TEMP/vercel-protection.json" --write-out "%{http_code}" \
             --request PATCH \
-            --url "https://api.vercel.com/v9/projects/$VERCEL_PROJECT_NAME?teamId=team_GI0H1MJPmSQhzRXjQ1DMbK27" \
+            --url "https://api.vercel.com/v9/projects/$VERCEL_PROJECT_NAME?teamId=$VERCEL_TEAM_ID" \
             --header "Authorization: Bearer $VERCEL_TOKEN" \
             --header "Content-Type: application/json" \
             --data '{"ssoProtection":{"deploymentType":"preview"}}')
@@ -138,4 +169,6 @@ jobs:
           assets=$(curl --fail-with-body -sSL "$base/api/assets")
           printf '%s' "$assets" | python3 -c 'import json,sys; d=json.load(sys.stdin); assert len(d["items"])==2'
           echo "Asset API: PASS"
+          curl --fail-with-body -sSL -o /dev/null "$base/assets/img/editorial/hero-industrial-still-life-light.webp"
+          echo "Polished V2 hero artwork: PASS"
           echo "All live smoke tests passed" >> "$GITHUB_STEP_SUMMARY"
