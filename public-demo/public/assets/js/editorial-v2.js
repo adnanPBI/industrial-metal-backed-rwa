@@ -7,21 +7,14 @@
   const scriptUrl = document.currentScript && document.currentScript.src;
   const mediaRoot = scriptUrl ? new URL("../img/editorial/", scriptUrl).pathname : "/assets/img/editorial/";
   const photo = (file, alt, opts = "") => {
-    const isLight = document.documentElement.dataset.theme === "light";
-    const hasLightVariant = file === "hero-industrial-still-life.webp";
-    const darkSrc = mediaRoot + file;
-    const lightSrc = hasLightVariant ? mediaRoot + "hero-industrial-still-life-light.webp" : darkSrc;
-    const activeSrc = (isLight && hasLightVariant) ? lightSrc : darkSrc;
-    const themeAttrs = hasLightVariant
-      ? ' data-theme-logo data-dark-src="' + darkSrc + '" data-light-src="' + lightSrc + '"'
-      : "";
-    return '<img src="' + activeSrc + '"' + themeAttrs + ' loading="lazy" decoding="async" alt="' + alt + '" ' + opts + ' onerror="this.hidden=true;this.parentElement.classList.add(\'rcv-image-fallback\')" />';
+    const src = mediaRoot + file;
+    return '<img src="' + src + '" loading="lazy" decoding="async" alt="' + alt + '" ' + opts + ' onerror="this.hidden=true;this.parentElement.classList.add(\'rcv-image-fallback\')" />';
   };
-  const future = [
-    {title:"Gold Bullion",desc:"Precious metals, subject to future program review.",img:"gold-bullion.webp",symbol:"AU"},
-    {title:"Energy Assets",desc:"Industrial energy assets as a prospective category.",img:"energy-assets.webp",symbol:"EN"},
-    {title:"Real Estate",desc:"Property infrastructure as a conceptual future category.",img:"real-estate.webp",symbol:"RE"},
-    {title:"Art & Collectibles",desc:"Collectibles, subject to verification and legal review.",img:"art-collectibles.webp",symbol:"ART"}
+  const evidenceCards = [
+    {title:"Copper Powder · Assay",desc:"Historical IGAS analysis 0004512; custody and current quantities require independent confirmation.",img:"copper-powder.webp"},
+    {title:"Copper Powder · Passport",desc:"Lot #03-K-07; structured evidence and proposed Digital Asset Passport.",img:"copper-powder.webp"},
+    {title:"Nickel Wire · Specification",desc:"0.025 mm wire; historical IGAS analysis 0004368.",img:"nickel-wire.webp"},
+    {title:"Nickel Wire · Passport",desc:"Lot 120/NP1; custody and reserve reconciliation are pending.",img:"nickel-wire.webp"}
   ];
   const pillars = [
     ["01","Physical assets","Industrial-material programs, documented by source"],
@@ -59,11 +52,11 @@
   }
   function futureSection(){
     return '<section class="rcv-section rcv-future" aria-labelledby="rcv-future-heading"><div class="rcv-wrap">' +
-      '<div class="rcv-heading"><span class="rcv-mini-label">LONG-TERM ROADMAP · CONCEPTS ONLY</span>' +
-      '<h2 id="rcv-future-heading">A wider world of <em>real assets.</em></h2>' +
-      '<p>These categories are conceptual. No asset is held, insured, reserved, offered or tokenized by this demonstration.</p></div>' +
-      '<div class="rcv-future-grid">' + future.map(x => '<article class="rcv-future-card">'+media(x.img,x.title+' — illustrative future-category photography') +
-      '<div class="rcv-future-copy"><span>FUTURE CATEGORY / NOT ACTIVE</span><h3>'+x.title+'</h3><p>'+x.desc+'</p></div></article>').join('') + '</div></div></section>';
+      '<div class="rcv-heading"><span class="rcv-mini-label">COPPER POWDER & NICKEL WIRE · DOCUMENTED SOURCES</span>' +
+      '<h2 id="rcv-future-heading">Two metals. <em>One evidence-first platform.</em></h2>' +
+      '<p>Explore the two initial industrial-metal programs only. Historical laboratory reports are not proof of present title, custody, insured stock or reserves.</p></div>' +
+      '<div class="rcv-future-grid">' + evidenceCards.map(x => '<article class="rcv-future-card">'+media(x.img,x.title+' — illustrative Copper or Nickel image') +
+      '<div class="rcv-future-copy"><span>PRE-LAUNCH · SOURCE EVIDENCE ONLY</span><h3>'+x.title+'</h3><p>'+x.desc+'</p></div></article>').join('') + '</div></div></section>';
   }
   function lifecycle(){
     return '<div class="rcv-lifecycle" role="list">'+stages.map((x,i)=>'<div class="rcv-step" role="listitem"><div class="rcv-step-icon">'+String(i+1).padStart(2,'0')+'</div><b>'+x+'</b><small>'+(i===5?'Inactive / no tokens issued':'Evidence gate / illustrative process')+'</small></div>').join('')+'</div>';
@@ -90,8 +83,12 @@
     '<a href="/proof-of-reserves">Review reserve framework →</a></article></div></div></section>';
   }
   function addHeroImage(host) {
-    host.innerHTML='<div class="rcv-still-image">'+photo("hero-industrial-still-life.webp","Illustrative 3D still life featuring copper powder and nickel wire against a global metals theme",'fetchpriority="high" loading="eager"')+'</div>' +
-      '<div class="rcv-hero-globe" aria-hidden="true"></div><div class="rcv-hero-caption"><span>PHYSICAL METALS</span><b>Source → Evidence → Digital Identity</b><small>Illustrative concept, not custody evidence</small></div>';
+    host.innerHTML='<div class="rcv-still-image rcv-two-metals"><div class="rcv-metal-hero rcv-metal-copper">' +
+      photo("copper-powder.webp","Copper powder in a dark bowl — illustrative photograph",'fetchpriority="high" loading="eager"') +
+      '<span>COPPER POWDER</span></div><div class="rcv-metal-hero rcv-metal-nickel">' +
+      photo("nickel-wire.webp","Nickel wire wound onto a spool — illustrative photograph",'loading="eager"') +
+      '<span>NICKEL WIRE · 0.025 mm</span></div></div>' +
+      '<div class="rcv-hero-globe" aria-hidden="true"></div><div class="rcv-hero-caption"><span>TWO INITIAL PROGRAMS</span><b>Copper Powder · Nickel Wire</b><small>Illustrative imagery, not custody or reserves evidence</small></div>';
     host.classList.add('rcv-scene');
   }
   function decorateSecondary(main) {
@@ -101,13 +98,9 @@
     if (/\/(admin|participant-portal|redemption-portal)/.test(currentPath)) return;
     const hero = main.querySelector('.page-hero > .container, .rc-pagehero > .rc-container');
     if (!hero || hero.classList.contains('rcv-page-hero-grid')) return;
-    let file = 'hero-industrial-still-life.webp';
-    if (/copper|powder/.test(currentPath)) file = 'copper-powder.webp';
-    else if (/nickel|wire/.test(currentPath)) file = 'nickel-wire.webp';
-    else if (/custody|vault|security/.test(currentPath)) file = 'gold-bullion.webp';
-    else if (/industrial-buyer|enterprise|licensing/.test(currentPath)) file = 'energy-assets.webp';
-    else if (/future-asset/.test(currentPath)) file = 'real-estate.webp';
-    else if (/whitepaper|news|resource/.test(currentPath)) file = 'art-collectibles.webp';
+    // Every editorial image is from the Copper Powder or Nickel Wire program.
+    const file = /nickel|wire|passport|verification|security|custody|resource|whitepaper/.test(currentPath)
+      ? 'nickel-wire.webp' : 'copper-powder.webp';
     const copy = document.createElement('div');
     copy.className = 'rcv-page-copy';
     while (hero.firstChild) copy.appendChild(hero.firstChild);

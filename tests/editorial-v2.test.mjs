@@ -12,12 +12,12 @@ test('no buy now buttons or artificial countdowns in enhanced UI',()=>{
   assert.match(demo,/0 tokens issued in this demo/i);
   assert.match(demo,/No audited reserve coverage ratio/i);
 });
-test('premium design includes hero scene, 4 facts, 5 pillars, 4 categories, 6 stages and evidence pair',()=>{
-  for(const s of ['hero-industrial-still-life.webp','copper-powder.webp','nickel-wire.webp','gold-bullion.webp',
-  'energy-assets.webp','real-estate.webp','art-collectibles.webp','makePillars','futureSection','lifecycle','previewPair'])assert.ok(demo.includes(s),s);
-  assert.match(demo,/const future = \[/);
+test('premium design includes only Copper and Nickel images, 4 facts, 5 pillars, 4 evidence cards, 6 stages and passports',()=>{
+  for(const s of ['copper-powder.webp','nickel-wire.webp','makePillars','futureSection','lifecycle','previewPair','rcv-two-metals'])assert.ok(demo.includes(s),s);
+  assert.match(demo,/const evidenceCards = \[/);
   assert.match(demo,/const stages = \[/);
-  assert.match(demo,/No asset is held, insured, reserved, offered or tokenized/);
+  assert.match(demo,/Historical laboratory reports are not proof/);
+  assert.doesNotMatch(demo,/Gold Bullion|Energy Assets|Real Estate|Art & Collectibles|gold-bullion\.webp|energy-assets\.webp|real-estate\.webp|art-collectibles\.webp|hero-industrial-still-life/i);
 });
 test('keeps light/dark themes and responsiveness',()=>{
   assert.match(css,/html\[data-theme="light"\]/);
@@ -68,12 +68,12 @@ test('precision-machined metallic edge bezel system styles all editorial image c
  assert.match(sheet,/\.asset-card\.nickel \.rcv-inline-asset/);
 });
 
-test('soft white theme overrides hero section and swaps main still-life image',()=>{
+test('both color themes retain Copper and Nickel hero artwork',()=>{
  const sheet=fs.readFileSync('public-demo/public/assets/css/editorial-v2.css','utf8');
  const js=fs.readFileSync('public-demo/public/assets/js/editorial-v2.js','utf8');
  assert.match(sheet,/html\[data-theme="light"\] \.hero:has\(\.rcv-scene\)/);
  assert.match(sheet,/html\[data-theme="light"\] \.rcv-scene/);
- assert.match(sheet,/html\[data-theme="light"\] \.rcv-hero-caption/);
- assert.match(js,/hero-industrial-still-life-light\.webp/);
- assert.match(js,/data-light-src/);
+ assert.match(sheet,/html\[data-theme="light"\] \.rcv-metal-hero/);
+ assert.match(js,/rcv-two-metals/);
+ assert.doesNotMatch(js,/hero-industrial-still-life/);
 });

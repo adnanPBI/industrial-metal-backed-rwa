@@ -169,6 +169,7 @@ jobs:
           assets=$(curl --fail-with-body -sSL "$base/api/assets")
           printf '%s' "$assets" | python3 -c 'import json,sys; d=json.load(sys.stdin); assert len(d["items"])==2'
           echo "Asset API: PASS"
-          curl --fail-with-body -sSL -o /dev/null "$base/assets/img/editorial/hero-industrial-still-life-light.webp"
-          echo "Polished V2 hero artwork: PASS"
+          curl --fail-with-body -sSL -o /dev/null "$base/assets/img/editorial/copper-powder.webp"
+          curl --fail-with-body -sSL -o /dev/null "$base/assets/img/editorial/nickel-wire.webp"
+          echo "Copper/Nickel-only hero artwork: PASS"
           echo "All live smoke tests passed" >> "$GITHUB_STEP_SUMMARY"

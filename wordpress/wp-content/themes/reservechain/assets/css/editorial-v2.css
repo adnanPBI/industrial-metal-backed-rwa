@@ -1838,3 +1838,12 @@ html[data-theme="light"] .rcv-step:hover .rcv-step-icon {
     border-bottom: 0;
   }
 }
+
+
+/* Two-metal visual restriction: source imagery is Copper Powder or Nickel Wire only. */
+.rcv-scene .rcv-two-metals{display:grid;grid-template-columns:1fr 1fr;gap:13px;padding:17px 16px 77px;mask-image:none;background:radial-gradient(circle at 45% 65%,rgba(159,98,45,.14),transparent 65%)}
+.rcv-metal-hero{min-width:0;height:100%;overflow:hidden;position:relative;border-radius:15px;border:1px solid rgba(231,174,103,.28);background:linear-gradient(145deg,#15151a,#090b10);box-shadow:0 16px 35px rgba(0,0,0,.28)}
+.rcv-metal-hero img{width:100%;height:100%;object-fit:cover;object-position:center;filter:none}
+.rcv-metal-hero>span{position:absolute;left:0;right:0;bottom:0;padding:11px 12px;background:linear-gradient(0deg,rgba(2,5,10,.90),rgba(2,5,10,.05));font-size:.66rem;font-weight:900;letter-spacing:.11em;color:#f1c889}
+html[data-theme="light"] .rcv-metal-hero{border-color:#c3d1dc;background:#eef6fb;box-shadow:0 16px 32px rgba(45,85,121,.13)}
+@media(max-width:620px){.rcv-scene .rcv-two-metals{gap:8px;padding:9px 9px 83px}.rcv-metal-hero>span{font-size:.55rem;padding:9px 7px}.rcv-metal-hero{border-radius:10px}}

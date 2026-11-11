@@ -30,14 +30,10 @@ PAGES = {
     "future": "/future-assets/"
 }
 TARGETS = {
-    "hero-industrial-still-life.webp": ("explore", r"(copper.*nickel.*gold|industrial.*metals.*globe|gold.*network.*globe|illustrative industrial metals)"),
     "copper-powder.webp": ("copper", r"(ultrafine copper powder asset program|copper powder.*(bowl|mound|sample)|copper powder)"),
-    "nickel-wire.webp": ("nickel", r"(nickel wire.*(spool|reel|program|coil)|ultrafine nickel wire)"),
-    "gold-bullion.webp": ("explore", r"(gold bars|gold bullion|gold reserves)"),
-    "energy-assets.webp": ("explore", r"(energy assets|oil pump|pumpjack|oil rig)"),
-    "real-estate.webp": ("explore", r"(real estate|office tower|property)"),
-    "art-collectibles.webp": ("explore", r"(art.*collectibles|framed.*(painting|art)|fine art)")
+    "nickel-wire.webp": ("nickel", r"(nickel wire.*(spool|reel|program|coil)|ultrafine nickel wire)")
 }
+
 BANNED = re.compile(r"(certificate|assay|bank|payment|passport.*qr|private|identification)", re.I)
 
 class ImgParser(HTMLParser):
