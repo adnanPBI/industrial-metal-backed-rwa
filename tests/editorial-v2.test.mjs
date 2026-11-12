@@ -121,3 +121,5 @@ test('generated Sepolia asset links and WordPress mirror derive from canonical d
  assert.match(php,/sepolia_spec\(\$a\['program_id'\]\)/);
  assert.match(php,/sepolia_passport_row\(\$a\['program_id'\]\)/);
 });
+
+test('passport distinguishes public Sepolia demo contract from unissued production rights',()=>{const app=fs.readFileSync('public-demo/public/assets/js/app.js','utf8');assert.match(app,/No production blockchain reference published; Sepolia demo only/);assert.doesNotMatch(app,/badge\('No blockchain reference published'/);});
