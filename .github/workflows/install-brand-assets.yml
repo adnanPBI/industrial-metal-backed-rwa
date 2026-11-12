@@ -1,4 +1,4 @@
-name: Install supplied ReserveChain 3D cube vector identity
+name: Sync canonical ReserveChain Copper/Nickel identity
 on:
   push:
     branches: [main]
@@ -23,8 +23,8 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.13"
-      - name: Decode pinned design assets and validate checksums
-        run: python scripts/install_brand_assets.py
+      - name: Verify canonical SVG vectors and synchronize WordPress
+        run: python scripts/install_brand_assets.py --install
       - name: Commit vector files to both site targets
         run: |
           git config user.name "github-actions[bot]"
@@ -32,7 +32,7 @@ jobs:
           git add public-demo/public/assets/img/reservechain-logo.svg public-demo/public/assets/img/reservechain-wordmark.svg public-demo/public/assets/img/reservechain-wordmark-light.svg
           git add wordpress/wp-content/themes/reservechain/assets/img/reservechain-logo.svg wordpress/wp-content/themes/reservechain/assets/img/reservechain-wordmark.svg wordpress/wp-content/themes/reservechain/assets/img/reservechain-wordmark-light.svg
           if git diff --cached --quiet; then echo "Brand assets already current"; else
-            git commit -m "assets(brand): install verified owner-supplied 3D cube logos and dual-mode wordmarks"
+            git commit -m "assets(brand): synchronize canonical Copper/Nickel logos and dual-mode wordmarks"
             git pull --rebase origin main
             git push origin HEAD:main
           fi
