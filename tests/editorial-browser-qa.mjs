@@ -66,7 +66,6 @@ await audit('soft white desktop theme toggle and persistence',async()=>{
   await page.locator('button[data-theme-toggle]').click();
   assert.equal(await page.evaluate(()=>document.documentElement.dataset.theme),'light');
   assert.equal(await page.evaluate(()=>localStorage.getItem('reservechain.theme')),'light');
-  await page.screenshot({path:'artifacts/visual-qa/home-soft-white-desktop.png',fullPage:true});
   await page.locator('.rcv-future-grid').waitFor();
   const lightHero=page.locator('.rcv-hero-composite img');
   await lightHero.evaluate(async img => { await img.decode(); });
@@ -100,6 +99,8 @@ await audit('soft white desktop theme toggle and persistence',async()=>{
   const contrast=Math.sqrt(samples.reduce((sum,v)=>sum+(v-avg)**2,0)/samples.length);
   console.log('LIGHT_HERO_PAINT_CONTRAST='+contrast.toFixed(2));
   assert.ok(contrast>=18,'Soft-white hero screenshot is visually blank although the image decoded; contrast='+contrast.toFixed(2));
+  await page.evaluate(()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve))));
+  await page.screenshot({path:'artifacts/visual-qa/home-soft-white-desktop.png',fullPage:true});
 
   const lightEvidence=await page.locator('.rcv-future-grid img').evaluateAll(imgs=>imgs.map(i=>({src:i.currentSrc,width:i.naturalWidth})));
   for(const file of ['copper-assay-lab.webp','copper-custody-canister.webp','nickel-wire-micrometer.webp','nickel-passport-bobbins.webp']){
@@ -128,6 +129,11 @@ await audit('390px mobile navigation, editorial cards and no overflow',async()=>
   await page.screenshot({path:'artifacts/visual-qa/home-dark-mobile.png',fullPage:true});
   await page.locator('button[data-theme-toggle]').click();
   assert.equal(await page.evaluate(()=>document.documentElement.dataset.theme),'light');
+  await page.locator('.rcv-hero-composite img').evaluate(async img=>{
+    await img.decode();
+    if(img.naturalWidth<1200)throw new Error('Mobile soft-white hero photograph did not decode');
+  });
+  await page.evaluate(()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve))));
   await page.screenshot({path:'artifacts/visual-qa/home-soft-white-mobile.png',fullPage:true});
   await context.close();
 });
