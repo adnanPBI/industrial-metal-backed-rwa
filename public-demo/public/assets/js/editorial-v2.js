@@ -19,7 +19,7 @@
     const active = isThemeImage && document.documentElement.dataset.theme === "light" ? lightSrc : darkSrc;
     const safeFallback = fallback ? mediaRoot + fallback : '';
     return '<img src="' + active + '"' + themeProps + ' loading="lazy" decoding="async" alt="' + alt +
-      '" data-fallback="' + safeFallback + '" ' + opts + ' onerror="if(this.dataset.fallback && this.src!==this.dataset.fallback){this.src=this.dataset.fallback;this.removeAttribute(\'data-theme-logo\');}else{this.hidden=true;this.parentElement.classList.add(\'rcv-image-fallback\')}" />';
+      '" data-fallback="' + safeFallback + '" ' + opts + ' onerror="if(this.dataset.fallback && !this.dataset.fallbackUsed){this.dataset.fallbackUsed=\'1\';this.src=this.dataset.fallback;this.removeAttribute(\'data-theme-logo\');}else{const parent=this.parentElement;if(parent.classList.contains(\'rcv-hero-composite\'))parent.remove();else this.remove();}" />';
   };
   const evidenceCards = [
     {title:"Copper Powder · Assay",desc:"Historical IGAS analysis 0004512 (99.9999% reported purity); custody and current quantities require independent confirmation.",img:"copper-assay-lab.webp",fallback:"copper-powder.webp"},
