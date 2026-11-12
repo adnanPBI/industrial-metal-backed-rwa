@@ -17,7 +17,37 @@ class RC_Pages {
     }
     public static function get_def($key){ foreach(self::definitions() as $d)if($d['key']===$key)return $d; return null; }
     public static function shortcode($atts){ $a=shortcode_atts(['key'=>''],$atts); $d=self::get_def(sanitize_key($a['key'])); if(!$d)return '<div class="rc-notice">Unknown ReserveChain page definition.</div>';
-        if($d['key']==='home')return self::render_home(); if($d['key']==='copper-powder')return self::render_asset('copper-powder'); if($d['key']==='nickel-wire')return self::render_asset('nickel-wire'); if($d['key']==='waitlist')return self::render_generic($d).self::waitlist_shortcode(); if(in_array($d['key'],['participant-portal','redemption-portal'],true))return self::render_portal($d); return self::render_generic($d);
+        if($d['key']==='home')return self::render_home(); if($d['key']==='copper-powder')return self::render_asset('copper-powder'); if($d['key']==='nickel-wire')return self::render_asset('nickel-wire'); if($d['key']==='digital-asset-passports')return self::render_generic($d).self::sepolia_index(); if($d['key']==='waitlist')return self::render_generic($d).self::waitlist_shortcode(); if(in_array($d['key'],['participant-portal','redemption-portal'],true))return self::render_portal($d); return self::render_generic($d);
+    }
+    private static function sepolia_data(){
+        $path = get_template_directory().'/assets/data/sepolia-demo.json';
+        if (!is_readable($path)) return [];
+        $data = json_decode(file_get_contents($path),true);
+        if (!is_array($data) || ($data['environment'] ?? '')!=='SEPOLIA_TESTNET_ONLY' || (int)($data['chainId'] ?? 0)!==11155111) return [];
+        return $data['assets'] ?? [];
+    }
+    private static function sepolia_token($program_id){
+        foreach(self::sepolia_data() as $token){
+            if (($token['programId'] ?? '')===$program_id && preg_match('/^0x[0-9a-fA-F]{40}$/',$token['address'] ?? '')) return $token;
+        }
+        return null;
+    }
+    private static function sepolia_spec($program_id){
+        $t=self::sepolia_token($program_id);if(!$t)return '';
+        $url='https://sepolia.etherscan.io/address/'.$t['address'];
+        return '<div><span>Sepolia demo ERC-20 ('.esc_html($t['symbol']).')</span><b><a href="'.esc_url($url).'" target="_blank" rel="noopener noreferrer">'.esc_html($t['address']).' ↗</a></b><small>0 issued supply at deployment block '.esc_html($t['blockNumber']).'; not proof of reserve backing.</small></div>';
+    }
+    private static function sepolia_passport_row($program_id){
+        $t=self::sepolia_token($program_id);if(!$t)return '';
+        return '<tr><th>Sepolia demo ERC-20</th><td><a href="'.esc_url('https://sepolia.etherscan.io/address/'.$t['address']).'" target="_blank" rel="noopener noreferrer">'.esc_html($t['address']).' ↗</a> (0 supply at deployment)</td></tr>';
+    }
+    private static function sepolia_index(){
+        $out='<section class="rc-section"><div class="rc-container"><h2>Sepolia demonstration contracts</h2><p>Unbacked technical deployments, zero issued supply at deployment. No ownership, custody or reserve coverage asserted.</p><div class="rc-grid rc-grid-2">';
+        foreach (self::sepolia_data() as $t) {
+            if (!preg_match('/^0x[0-9a-fA-F]{40}$/',$t['address'] ?? '')) continue;
+            $out.='<article class="rc-card"><h3>'.esc_html($t['name']).'</h3>'.self::sepolia_spec($t['programId']).'</article>';
+        }
+        return $out.'</div></div></section>';
     }
     private static function badge($txt,$cls=''){return '<span class="rc-badge '.esc_attr($cls).'">'.esc_html($txt).'</span>';}
     private static function button($slug,$label,$primary=false){$p=get_page_by_path($slug);$u=$p?get_permalink($p):home_url('/'.$slug.'/');return '<a class="rc-btn '.($primary?'rc-btn-primary':'rc-btn-secondary').'" href="'.esc_url($u).'">'.esc_html($label).'</a>';}
@@ -31,8 +61,8 @@ class RC_Pages {
     private static function asset_card($a){ $url=home_url('/'.sanitize_title($a['slug']).'/'); return '<article class="rc-card"><div class="rc-asset-visual '.esc_attr($a['material']==='Copper'?'copper':'nickel').'"></div>'.self::badge($a['verification_status']).'<h3>'.esc_html($a['name']).'</h3><div class="rc-specrow"><span>Purity <b>'.esc_html($a['purity']).'</b></span><span>'.($a['diameter']?'Diameter':'Lot').' <b>'.esc_html($a['diameter']?:$a['lot_id']).'</b></span></div><p>'.esc_html($a['evidence_note']).'</p><a class="rc-cardlink" href="'.esc_url($url).'">View asset program →</a></article>'; }
     private static function render_asset($slug){ $a=RC_Registry::by_slug($slug); if(!$a)return '<div class="rc-notice">Asset record unavailable.</div>'; ob_start(); ?>
         <section class="rc-pagehero"><div class="rc-container"><div class="rc-eyebrow">Initial Asset Program</div><h1><?php echo esc_html($a['name']); ?></h1><p><?php echo esc_html($a['evidence_note']); ?></p><div><?php echo self::badge('PRE-LAUNCH / EVIDENCE REVIEW'); echo ' '.self::badge('Tokenization: '.$a['tokenization_status'],'muted'); ?></div></div></section>
-        <section class="rc-section"><div class="rc-container"><div class="rc-specgrid"><?php $specs=['Program ID'=>$a['program_id'],'Purity'=>$a['purity'],($a['diameter']?'Diameter':'Lot / Batch')=>($a['diameter']?:$a['lot_id']),'Laboratory'=>$a['laboratory'],'Certificate'=>$a['certificate_no'],'Certificate date'=>$a['certificate_date'],'Custody'=>$a['custody_status'],'Reserves'=>$a['reserve_status']]; foreach($specs as $k=>$v)echo '<div><span>'.esc_html($k).'</span><b>'.esc_html($v).'</b></div>'; ?></div></div></section>
-        <section class="rc-section"><div class="rc-container rc-grid rc-grid-2"><div class="rc-card"><div class="rc-eyebrow">Evidence Architecture</div><h2>Laboratory evidence is a source record, not a reserve claim.</h2><p>The supplied Certificate of Analysis can support documented material specifications. Ownership, current inventory, custody, insurance, valuation, reserve eligibility and tokenization require separate approved records.</p></div><div class="rc-card"><div class="rc-eyebrow">Digital Asset Passport</div><h3><?php echo esc_html($a['passport_id']); ?></h3><?php echo self::badge('ILLUSTRATIVE / DEMO DATA','demo'); ?><table class="rc-table"><tr><th>Verification</th><td><?php echo esc_html($a['verification_status']); ?></td></tr><tr><th>Custody</th><td><?php echo esc_html($a['custody_status']); ?></td></tr><tr><th>Reserve</th><td><?php echo esc_html($a['reserve_status']); ?></td></tr><tr><th>Token</th><td><?php echo esc_html($a['tokenization_status']); ?></td></tr></table></div></div></section>
+        <section class="rc-section"><div class="rc-container"><div class="rc-specgrid"><?php $specs=['Program ID'=>$a['program_id'],'Purity'=>$a['purity'],($a['diameter']?'Diameter':'Lot / Batch')=>($a['diameter']?:$a['lot_id']),'Laboratory'=>$a['laboratory'],'Certificate'=>$a['certificate_no'],'Certificate date'=>$a['certificate_date'],'Custody'=>$a['custody_status'],'Reserves'=>$a['reserve_status']]; foreach($specs as $k=>$v)echo '<div><span>'.esc_html($k).'</span><b>'.esc_html($v).'</b></div>'; echo self::sepolia_spec($a['program_id']); ?></div></div></section>
+        <section class="rc-section"><div class="rc-container rc-grid rc-grid-2"><div class="rc-card"><div class="rc-eyebrow">Evidence Architecture</div><h2>Laboratory evidence is a source record, not a reserve claim.</h2><p>The supplied Certificate of Analysis can support documented material specifications. Ownership, current inventory, custody, insurance, valuation, reserve eligibility and tokenization require separate approved records.</p></div><div class="rc-card"><div class="rc-eyebrow">Digital Asset Passport</div><h3><?php echo esc_html($a['passport_id']); ?></h3><?php echo self::badge('ILLUSTRATIVE / DEMO DATA','demo'); ?><table class="rc-table"><tr><th>Verification</th><td><?php echo esc_html($a['verification_status']); ?></td></tr><tr><th>Custody</th><td><?php echo esc_html($a['custody_status']); ?></td></tr><tr><th>Reserve</th><td><?php echo esc_html($a['reserve_status']); ?></td></tr><tr><th>Token</th><td><?php echo esc_html($a['tokenization_status']); ?></td></tr><?php echo self::sepolia_passport_row($a['program_id']); ?></table></div></div></section>
         <section class="rc-section rc-section-tight"><div class="rc-narrow"><?php echo self::disclosure(); ?></div></section>
         <?php return ob_get_clean(); }
     private static function render_generic($d){ ob_start(); ?><section class="rc-pagehero"><div class="rc-container"><div class="rc-eyebrow"><?php echo esc_html($d['category']); ?></div><h1><?php echo esc_html($d['title']); ?></h1><p><?php echo esc_html($d['summary']); ?></p><div class="rc-actions"><?php echo self::button('explore-assets','Explore Assets',true); echo self::button('contact','Contact ReserveChain'); ?></div></div></section><section class="rc-section"><div class="rc-container rc-grid rc-grid-3"><?php foreach($d['sections'] as $s): ?><article class="rc-card"><h3><?php echo esc_html($s['title']); ?></h3><p><?php echo esc_html($s['body']); ?></p></article><?php endforeach; ?></div></section><section class="rc-section rc-section-tight"><div class="rc-narrow"><?php echo self::disclosure(); ?></div></section><?php return ob_get_clean(); }

@@ -112,6 +112,34 @@ assets=[
  {'id':'RC-PROG-CU-001','slug':'copper-powder','name':'Ultrafine Copper Powder','material':'Copper','form':'Ultrafine powder','status':'PRE-LAUNCH / EVIDENCE REVIEW','purity':'99.9999%','diameter':None,'lot':'#03-K-07','certificate_no':'0004512','certificate_date':'04.07.2022','laboratory':'IGAS research','tokenization_status':'Not issued','custody_status':'Pending owner-approved documentation','reserve_status':'No live reserve claim published','passport_id':'RC-DAP-CU-03K07-DEMO','certificate_image':'assets/img/copper-certificate-preview.svg','evidence_note':'Supplied IGAS Certificate of Analysis supports the displayed purity and lot reference. It is not by itself proof of current ownership, custody, insurance or reserves.'},
  {'id':'RC-PROG-NI-001','slug':'nickel-wire','name':'Ultrafine Nickel Wire 0.025 mm','material':'Nickel','form':'Wire','status':'PRE-LAUNCH / EVIDENCE REVIEW','purity':'99.9807%','diameter':'0.025 mm','lot':'120/NP1','certificate_no':'0004368','certificate_date':'19.10.2021','laboratory':'IGAS research','tokenization_status':'Not issued','custody_status':'Pending owner-approved documentation','reserve_status':'No live reserve claim published','passport_id':'RC-DAP-NI-120NP1-DEMO','certificate_image':'assets/img/nickel-certificate-preview.svg','evidence_note':'Supplied IGAS Certificate of Analysis supports the displayed purity and wire diameter. It is not by itself proof of current ownership, custody, insurance or reserves.'}
 ]
+# Contract links are derived from the canonical, recorded Sepolia deployment.
+# These testnet metadata fields do not imply a live reserve, ownership, or sale.
+manifest=json.loads((ROOT/'contracts/deployments/sepolia-demo.json').read_text(encoding='utf-8'))
+if manifest.get('chainId') != 11155111 or manifest.get('environment') != 'SEPOLIA_TESTNET_ONLY':
+    raise ValueError('Unexpected Sepolia deployment environment')
+contracts={row['programId']:row for row in manifest.get('assets',[])}
+if set(contracts) != {'RC-PROG-CU-001','RC-PROG-NI-001'}:
+    raise ValueError('Expected exactly the two approved demonstration programs')
+for asset in assets:
+    record=contracts[asset['id']]
+    address=record['address']
+    if not re.fullmatch(r'0x[0-9A-Fa-f]{40}',address) or record['totalSupply']!='0':
+        raise ValueError('Invalid deployment receipt metadata for '+asset['id'])
+    asset.update({
+        'sepolia_chain_id':11155111,
+        'sepolia_address':address,
+        'sepolia_symbol':record['symbol'],
+        'sepolia_explorer':'https://sepolia.etherscan.io/address/'+address,
+        'sepolia_tx_hash':record['transactionHash'],
+        'sepolia_tx_explorer':'https://sepolia.etherscan.io/tx/'+record['transactionHash'],
+        'sepolia_block':record['blockNumber'],
+        'sepolia_deployment_supply':record['totalSupply'],
+    })
+
+# WordPress receives the same manifest rather than a duplicated set of addresses.
+wp_data=ROOT/'wordpress/wp-content/themes/reservechain/assets/data/sepolia-demo.json'
+wp_data.parent.mkdir(parents=True,exist_ok=True)
+wp_data.write_text(json.dumps(manifest,indent=2,ensure_ascii=False)+'\n',encoding='utf-8')
 settings={
  'project':'ReserveChain.io',
  'mode':'PRE-LAUNCH',
