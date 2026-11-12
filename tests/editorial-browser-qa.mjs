@@ -66,7 +66,16 @@ await audit('soft white desktop theme toggle and persistence',async()=>{
   assert.equal(await page.evaluate(()=>localStorage.getItem('reservechain.theme')),'light');
   await page.screenshot({path:'artifacts/visual-qa/home-soft-white-desktop.png',fullPage:true});
   await page.locator('.rcv-future-grid').waitFor();
-  assert.ok((await page.locator('.rcv-hero-composite img').getAttribute('src')).endsWith('/hero-copper-nickel-light.webp'),'Light hero image missing, or fallback active');
+  const lightHero=page.locator('.rcv-hero-composite img');
+  await lightHero.evaluate(async img => { await img.decode(); });
+  const lightState=await lightHero.evaluate(img=>({src:img.currentSrc,width:img.naturalWidth,height:img.naturalHeight}));
+  assert.ok(lightState.src.endsWith('/hero-copper-nickel-light.webp'),'Light hero unexpectedly fell back: '+lightState.src);
+  assert.ok(lightState.width>=1200 && lightState.height>=650,'Light hero not decoded at full resolution: '+JSON.stringify(lightState));
+  const lightEvidence=await page.locator('.rcv-future-grid img').evaluateAll(imgs=>imgs.map(i=>({src:i.currentSrc,width:i.naturalWidth})));
+  for(const file of ['copper-assay-lab.webp','copper-custody-canister.webp','nickel-wire-micrometer.webp','nickel-passport-bobbins.webp']){
+    const target=lightEvidence.find(i=>i.src.endsWith('/'+file));
+    assert.ok(target,'Light evidence image unavailable: '+file);
+  }
   await page.goto(base+'/copper-powder',{waitUntil:'networkidle'});
   assert.equal(await page.evaluate(()=>document.documentElement.dataset.theme),'light');
   assert.equal(await page.locator('.rcv-page-hero-grid').count(),1);

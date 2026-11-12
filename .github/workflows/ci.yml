@@ -28,6 +28,8 @@ jobs:
         run: node --test tests/theme-toggle.test.mjs tests/remediation_review.test.mjs tests/reconciliation.test.mjs tests/editorial-v2.test.mjs
       - name: WordPress interface and publication authorization regression
         run: php tests/wordpress_publication_compat.php
+      - name: Render WordPress Copper/Nickel Sepolia links with fail-closed fixtures
+        run: php tests/wordpress_sepolia_routes.php
       - name: Exact editorial media integrity and WordPress parity
         run: python tests/editorial_media_acceptance.py
       - name: Static audit

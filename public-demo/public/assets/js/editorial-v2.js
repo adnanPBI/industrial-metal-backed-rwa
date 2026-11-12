@@ -100,6 +100,12 @@
     '<a href="/proof-of-reserves">Review reserve framework →</a></article></div></div></section>';
   }
   function addHeroImage(host) {
+    // Prefetch the opposite theme before the user toggles; never show an empty hero frame.
+    const alternate = document.documentElement.dataset.theme === 'light'
+      ? 'hero-copper-nickel-dark.webp' : 'hero-copper-nickel-light.webp';
+    const preload = new Image();
+    preload.decoding = 'async';
+    preload.src = mediaRoot + alternate;
     host.innerHTML='<div class="rcv-still-image rcv-two-metals">' +
       '<div class="rcv-hero-composite">'+photo("hero-copper-nickel-dark.webp","Illustrative Copper Powder and Nickel Wire studio still life",'fetchpriority="high" loading="eager"')+'</div>' +
       '<div class="rcv-metal-hero rcv-metal-copper">' +
