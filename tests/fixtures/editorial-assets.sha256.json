@@ -1,0 +1,32 @@
+{
+  "hero-copper-nickel-dark.webp": {
+    "sha256": "01cbb8241cc53011e2f12d56496247e59a52a347e1a503454e440d56550ae0d0",
+    "width": 1250,
+    "height": 703
+  },
+  "hero-copper-nickel-light.webp": {
+    "sha256": "eabcf0fc64e1d7227a8bbd4261e2cd25bbc2e855dcfd1051a5d78051fe7c1255",
+    "width": 1250,
+    "height": 703
+  },
+  "copper-assay-lab.webp": {
+    "sha256": "bac1cf473dbe3a8e7493d3660c1deda9cebf9f6824b52abb2a45b51fcac56d95",
+    "width": 800,
+    "height": 600
+  },
+  "copper-custody-canister.webp": {
+    "sha256": "fc0e92950cbd2c0ba31369b57d21744e83ef130b1b30b238b0a2d5ac4914b427",
+    "width": 800,
+    "height": 600
+  },
+  "nickel-wire-micrometer.webp": {
+    "sha256": "1c9d4a5d65f6113e82d5e4ff9d69412386348ad928231c334bd81dcded4e1599",
+    "width": 800,
+    "height": 600
+  },
+  "nickel-passport-bobbins.webp": {
+    "sha256": "90fe2aa3179ea74efc87254820652d450a5a2d546f333a476459fe6981b5e241",
+    "width": 800,
+    "height": 600
+  }
+}

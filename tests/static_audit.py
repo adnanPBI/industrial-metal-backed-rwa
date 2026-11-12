@@ -33,7 +33,7 @@ for candidate in (root/'public-demo/public/assets/js/app.js',
 for folder in (root/'public-demo/public/assets/img/editorial',
                root/'wordpress/wp-content/themes/reservechain/assets/img/editorial'):
     names={f.name for f in folder.iterdir() if f.is_file()}
-    assert names=={'copper-powder.webp','nickel-wire.webp'}, (str(folder),names)
+    assert names=={'copper-powder.webp','nickel-wire.webp','hero-copper-nickel-dark.webp','hero-copper-nickel-light.webp','copper-assay-lab.webp','copper-custody-canister.webp','nickel-wire-micrometer.webp','nickel-passport-bobbins.webp'}, (str(folder),names)
 css=(root/'public-demo/public/assets/css/app.css').read_text()
 assert 'ReserveChain Blue Glass v0.2' in css
 assert '--glass-blue:#4aa8ff' in css

@@ -104,3 +104,20 @@ test('uploaded editorial photos have safe shipped fallbacks',()=>{
  assert.match(demo,/data-fallback/);
  assert.match(demo,/rcv-two-metals/);
 });
+
+test('generated Sepolia asset links and WordPress mirror derive from canonical deployment',()=>{
+ const data=fs.readFileSync('public-demo/public/assets/js/site-data.js','utf8');
+ const app=fs.readFileSync('public-demo/public/assets/js/app.js','utf8');
+ const php=fs.readFileSync('wordpress/wp-content/plugins/reservechain-core/includes/class-rc-pages.php','utf8');
+ const manifest=JSON.parse(fs.readFileSync('contracts/deployments/sepolia-demo.json','utf8'));
+ const wpManifest=JSON.parse(fs.readFileSync('wordpress/wp-content/themes/reservechain/assets/data/sepolia-demo.json','utf8'));
+ assert.deepEqual(wpManifest,manifest);
+ for(const asset of manifest.assets){
+  assert.match(data,new RegExp(asset.address));
+  assert.match(data,new RegExp(asset.transactionHash));
+ }
+ assert.match(app,/testnetSpec\(asset\)/);
+ assert.match(app,/testnetPassportRow\(asset\)/);
+ assert.match(php,/sepolia_spec\(\$a\['program_id'\]\)/);
+ assert.match(php,/sepolia_passport_row\(\$a\['program_id'\]\)/);
+});
