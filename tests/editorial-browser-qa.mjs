@@ -1,6 +1,8 @@
 import { chromium } from 'playwright';
 import { mkdir } from 'node:fs/promises';
 import assert from 'node:assert/strict';
+import pngjs from 'pngjs';
+const { PNG } = pngjs;
 
 const base=(process.env.RC_SITE_URL || 'https://industrial-metal-backed-rwa.vercel.app').replace(/\/$/, '');
 await mkdir('artifacts/visual-qa',{recursive:true});
@@ -71,6 +73,34 @@ await audit('soft white desktop theme toggle and persistence',async()=>{
   const lightState=await lightHero.evaluate(img=>({src:img.currentSrc,width:img.naturalWidth,height:img.naturalHeight}));
   assert.ok(lightState.src.endsWith('/hero-copper-nickel-light.webp'),'Light hero unexpectedly fell back: '+lightState.src);
   assert.ok(lightState.width>=1200 && lightState.height>=650,'Light hero not decoded at full resolution: '+JSON.stringify(lightState));
+  const diagnostic=await lightHero.evaluate(img=>{
+    const summary=(n)=>{ if(!n)return null;const c=getComputedStyle(n),r=n.getBoundingClientRect();return {
+      tag:n.tagName,cls:n.className,rect:{w:Math.round(r.width),h:Math.round(r.height),x:Math.round(r.x),y:Math.round(r.y)},
+      display:c.display,visibility:c.visibility,opacity:c.opacity,zIndex:c.zIndex,
+      background:c.backgroundColor,filter:c.filter,mask:c.maskImage,transform:c.transform,position:c.position
+    };};
+    const scene=img.closest('.rcv-scene');
+    const r=img.getBoundingClientRect();
+    const elementAtCenter=document.elementFromPoint(r.x+r.width/2,r.y+r.height*0.4);
+    return {img:summary(img),composite:summary(img.parentElement),still:summary(img.parentElement?.parentElement),scene:summary(scene),
+      overlay:getComputedStyle(scene,'::before').cssText,
+      center:elementAtCenter?.className,
+      theme:document.documentElement.dataset.theme};
+  });
+  console.log('LIGHT_HERO_CSS_DIAG='+JSON.stringify(diagnostic));
+  const frame=PNG.sync.read(await page.locator('.rcv-scene').screenshot({path:'artifacts/visual-qa/hero-soft-white-visual-gate.png'}));
+  const samples=[];
+  for(let y=Math.floor(frame.height*.12);y<Math.floor(frame.height*.69);y+=12){
+    for(let x=Math.floor(frame.width*.12);x<Math.floor(frame.width*.88);x+=12){
+      const i=(y*frame.width+x)*4;
+      samples.push((frame.data[i]*.299+frame.data[i+1]*.587+frame.data[i+2]*.114));
+    }
+  }
+  const avg=samples.reduce((a,b)=>a+b,0)/samples.length;
+  const contrast=Math.sqrt(samples.reduce((sum,v)=>sum+(v-avg)**2,0)/samples.length);
+  console.log('LIGHT_HERO_PAINT_CONTRAST='+contrast.toFixed(2));
+  assert.ok(contrast>=18,'Soft-white hero screenshot is visually blank although the image decoded; contrast='+contrast.toFixed(2));
+
   const lightEvidence=await page.locator('.rcv-future-grid img').evaluateAll(imgs=>imgs.map(i=>({src:i.currentSrc,width:i.naturalWidth})));
   for(const file of ['copper-assay-lab.webp','copper-custody-canister.webp','nickel-wire-micrometer.webp','nickel-passport-bobbins.webp']){
     const target=lightEvidence.find(i=>i.src.endsWith('/'+file));
