@@ -88,3 +88,19 @@ test('Copper and Nickel branding replaces multi-asset cube artwork',()=>{
    }
  }
 });
+
+test('Sepolia public links are not described as reserve proof',()=>{
+ const p=JSON.parse(fs.readFileSync('contracts/deployments/sepolia-demo.json','utf8'));
+ assert.equal(p.chainId,11155111);
+ for(const asset of p.assets){
+   assert.match(demo,new RegExp(asset.address));
+   assert.equal(asset.totalSupply,'0');
+ }
+ assert.match(demo,/NO LIVE RESERVE DATA/);
+});
+test('uploaded editorial photos have safe shipped fallbacks',()=>{
+ for(const n of ['hero-copper-nickel-dark.webp','hero-copper-nickel-light.webp','copper-assay-lab.webp','copper-custody-canister.webp','nickel-wire-micrometer.webp','nickel-passport-bobbins.webp'])
+   assert.match(demo,new RegExp(n.replaceAll('.','\\.')));
+ assert.match(demo,/data-fallback/);
+ assert.match(demo,/rcv-two-metals/);
+});
