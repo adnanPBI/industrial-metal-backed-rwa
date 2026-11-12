@@ -15,6 +15,10 @@ for name,metadata in REQUIRED.items():
     data=(LEFT/name).read_bytes()
     assert data[:4]==b'RIFF' and data[8:12]==b'WEBP', 'Not WebP: '+name
     assert len(data)>10000, 'Unexpectedly small file: '+name
+    assert data[12:16]==b'VP8 ', 'Expected vetted simple VP8 WebP: '+name
+    width=int.from_bytes(data[26:28],'little') & 0x3fff
+    height=int.from_bytes(data[28:30],'little') & 0x3fff
+    assert (width,height)==(metadata['width'],metadata['height']), 'Incorrect image dimensions: '+name
     assert hashlib.sha256(data).hexdigest()==metadata['sha256'],'Digest mismatch: '+name
     assert (RIGHT/name).read_bytes()==data,'WordPress bytes differ: '+name
 assert len({x['sha256'] for x in REQUIRED.values()})==6,'Editorial images must be distinct'

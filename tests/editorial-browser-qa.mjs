@@ -28,6 +28,21 @@ await audit('dark desktop 1440px',async()=>{
   assert.ok(allImg.some(src=>src.includes('copper-powder.webp')));
   assert.ok(allImg.some(src=>src.includes('nickel-wire.webp')));
   assert.equal(await page.evaluate(()=>document.documentElement.dataset.theme),'dark');
+  const exactPhotos=['hero-copper-nickel-dark.webp','copper-assay-lab.webp','copper-custody-canister.webp','nickel-wire-micrometer.webp','nickel-passport-bobbins.webp'];
+  const imageUrls=await page.locator('.rcv-scene img, .rcv-future-grid img, .rcv-passport-photo img').evaluateAll(images=>images.map(img=>img.currentSrc));
+  for(const name of exactPhotos)assert.ok(imageUrls.some(url=>url.endsWith('/'+name)), 'Expected original editorial photo, not a fallback: '+name);
+  for(const [path,address] of [
+    ['/copper-powder','0xE67f6301eb05A9B5eF8E6b43d0a8b7137d4DEcFB'],
+    ['/nickel-wire','0xDd22f3E82dAc3647a705E4786a48F25969e20c01'],
+    ['/asset-passport/RC-DAP-CU-03K07-DEMO','0xE67f6301eb05A9B5eF8E6b43d0a8b7137d4DEcFB'],
+    ['/asset-passport/RC-DAP-NI-120NP1-DEMO','0xDd22f3E82dAc3647a705E4786a48F25969e20c01']
+  ]){
+    const tab=await context.newPage();
+    await tab.goto(base+path,{waitUntil:'networkidle'});
+    const link='https://sepolia.etherscan.io/address/'+address;
+    assert.ok(await tab.locator('a[href="'+link+'"]').count()>0,'Canonical Sepolia link missing at '+path);
+    await tab.close();
+  }
   for(const image of await page.locator('.rcv-future-grid img, .rcv-scene img, .rcv-split-asset img').all()){
     await image.scrollIntoViewIfNeeded();
     await image.evaluate(img=>new Promise((resolve,reject)=>{
@@ -51,6 +66,7 @@ await audit('soft white desktop theme toggle and persistence',async()=>{
   assert.equal(await page.evaluate(()=>localStorage.getItem('reservechain.theme')),'light');
   await page.screenshot({path:'artifacts/visual-qa/home-soft-white-desktop.png',fullPage:true});
   await page.locator('.rcv-future-grid').waitFor();
+  assert.ok((await page.locator('.rcv-hero-composite img').getAttribute('src')).endsWith('/hero-copper-nickel-light.webp'),'Light hero image missing, or fallback active');
   await page.goto(base+'/copper-powder',{waitUntil:'networkidle'});
   assert.equal(await page.evaluate(()=>document.documentElement.dataset.theme),'light');
   assert.equal(await page.locator('.rcv-page-hero-grid').count(),1);
