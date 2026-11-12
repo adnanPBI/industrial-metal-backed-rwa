@@ -1,0 +1,40 @@
+{
+  "environment": "SEPOLIA_TESTNET_ONLY",
+  "chainId": 11155111,
+  "generatedAt": "2026-11-12T06:39:27.470Z",
+  "sourceCommit": "5b811af78b164eff8bf1cc9640c38fbbb799fe46",
+  "description": "Unbacked technical demonstration; no ownership, reserve coverage, token offer or issuance.",
+  "testnetDeployer": "0xf9Dfa3e0f50931bb27C8bc86DE71e64d11e7e463",
+  "assets": [
+    {
+      "programId": "RC-PROG-CU-001",
+      "programIdHash": "0xe1f66ff2d914b0bdf5a44200a2a20368eb03bc3fe5bacd5527c1499bd5cacb0c",
+      "address": "0xE67f6301eb05A9B5eF8E6b43d0a8b7137d4DEcFB",
+      "name": "ReserveChain Copper Powder (Sepolia Demo)",
+      "symbol": "RC-CU-T",
+      "cap": "1000000000000000000000",
+      "totalSupply": "0",
+      "admin": "0xf9Dfa3e0f50931bb27C8bc86DE71e64d11e7e463",
+      "transactionHash": "0xaad8c8ca972807474d8ea509aa423776a1c87c2384c87db505174131ef68c0f2",
+      "blockNumber": 12117118,
+      "bytecodeHash": "0x1582dcc40ed3c436b724b7455c27551e1bb177ce299d7cd7877bff5704d3b7d8",
+      "explorer": "https://sepolia.etherscan.io/address/0xE67f6301eb05A9B5eF8E6b43d0a8b7137d4DEcFB",
+      "transactionExplorer": "https://sepolia.etherscan.io/tx/0xaad8c8ca972807474d8ea509aa423776a1c87c2384c87db505174131ef68c0f2"
+    },
+    {
+      "programId": "RC-PROG-NI-001",
+      "programIdHash": "0x9bf519fd1fe00badd38d1fa17a9a4f92ca45ddd3cb324753375a02fc07c295a1",
+      "address": "0xDd22f3E82dAc3647a705E4786a48F25969e20c01",
+      "name": "ReserveChain Nickel Wire (Sepolia Demo)",
+      "symbol": "RC-NI-T",
+      "cap": "1000000000000000000000",
+      "totalSupply": "0",
+      "admin": "0xf9Dfa3e0f50931bb27C8bc86DE71e64d11e7e463",
+      "transactionHash": "0xbe75434cd4e68c4602fa15bb42ded5327e3f515fa45467e58d6ee23d0eb5f885",
+      "blockNumber": 12117120,
+      "bytecodeHash": "0x687d688170cae28bd708d6e53f27b3fbbf6e9a339e9daac1028e0ccd910b0708",
+      "explorer": "https://sepolia.etherscan.io/address/0xDd22f3E82dAc3647a705E4786a48F25969e20c01",
+      "transactionExplorer": "https://sepolia.etherscan.io/tx/0xbe75434cd4e68c4602fa15bb42ded5327e3f515fa45467e58d6ee23d0eb5f885"
+    }
+  ]
+}
