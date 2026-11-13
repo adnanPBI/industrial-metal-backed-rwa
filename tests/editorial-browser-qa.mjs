@@ -21,6 +21,9 @@ async function assertNoHeroCaption(page, contextLabel){
       throw new Error('Full-resolution hero image failed to decode');
     }
   });
+  // elementFromPoint is viewport-relative; image loops above may have scrolled
+  // the hero off-screen. Bring it into view before testing visual stacking.
+  await scene.scrollIntoViewIfNeeded();
   const lowerImageVisible=await scene.evaluate(host=>{
     const image=host.querySelector('.rcv-hero-composite img');
     const rect=host.getBoundingClientRect();
