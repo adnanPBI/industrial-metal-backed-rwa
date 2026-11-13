@@ -124,17 +124,16 @@ test('generated Sepolia asset links and WordPress mirror derive from canonical d
 
 test('passport distinguishes public Sepolia demo contract from unissued production rights',()=>{const app=fs.readFileSync('public-demo/public/assets/js/app.js','utf8');assert.match(app,/No production blockchain reference published; Sepolia demo only/);assert.doesNotMatch(app,/badge\('No blockchain reference published'/);});
 
-test('hero caption is readable, semantically separated, responsive, and mirrored in WordPress',()=>{
+test('no text overlay is created in the hero; photo remains intact on public demo and WordPress',()=>{
   const markup=fs.readFileSync('public-demo/public/assets/js/editorial-v2.js','utf8');
   const wpMarkup=fs.readFileSync('wordpress/wp-content/themes/reservechain/assets/js/editorial-v2.js','utf8');
-  const styling=fs.readFileSync('public-demo/public/assets/css/editorial-v2.css','utf8');
-  const wpStyling=fs.readFileSync('wordpress/wp-content/themes/reservechain/assets/css/editorial-v2.css','utf8');
+  const css=fs.readFileSync('public-demo/public/assets/css/editorial-v2.css','utf8');
+  const wpCss=fs.readFileSync('wordpress/wp-content/themes/reservechain/assets/css/editorial-v2.css','utf8');
   assert.equal(markup,wpMarkup);
-  assert.equal(styling,wpStyling);
-  assert.match(markup,/rcv-hero-caption__label/);
-  assert.match(markup,/rcv-hero-caption__heading/);
-  assert.match(markup,/rcv-hero-caption__note/);
-  assert.match(markup,/Illustrative imagery · No custody or reserve claim/);
-  assert.match(styling,/\.rcv-scene \.rcv-hero-caption \{\s*display: grid/);
-  assert.match(styling,/@media \(max-width: 620px\)/);
+  assert.equal(css,wpCss);
+  assert.match(markup,/rcv-hero-composite/);
+  assert.match(markup,/hero-copper-nickel-dark\.webp/);
+  assert.doesNotMatch(markup,/rcv-hero-caption/);
+  assert.doesNotMatch(markup,/Source → Assay → Custody → Sepolia demo/);
+  assert.doesNotMatch(markup,/Illustrative imagery · No custody or reserve claim/);
 });

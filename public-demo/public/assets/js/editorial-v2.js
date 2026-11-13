@@ -113,11 +113,7 @@
       '<span>COPPER POWDER</span></div><div class="rcv-metal-hero rcv-metal-nickel">' +
       photo("nickel-wire.webp","Nickel wire wound onto a spool — illustrative photograph",'loading="eager"') +
       '<span>NICKEL WIRE · 0.025 mm</span></div></div>' +
-      '<div class="rcv-hero-globe" aria-hidden="true"></div>' +
-      '<div class="rcv-hero-caption" role="note" aria-label="Illustrative Copper Powder and Nickel Wire — no custody or reserve proof">' +
-      '<span class="rcv-hero-caption__label">COPPER POWDER · NICKEL WIRE</span>' +
-      '<b class="rcv-hero-caption__heading">Source → Assay → Custody → Sepolia demo</b>' +
-      '<small class="rcv-hero-caption__note">Illustrative imagery · No custody or reserve claim</small></div>';
+      '<div class="rcv-hero-globe" aria-hidden="true"></div>';
     host.classList.add('rcv-scene');
   }
   function decorateSecondary(main) {

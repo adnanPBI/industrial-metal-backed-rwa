@@ -9,36 +9,27 @@ await mkdir('artifacts/visual-qa',{recursive:true});
 const browser=await chromium.launch({headless:true,args:['--no-sandbox']});
 const failures=[];
 
-async function assertHeroCaptionLayout(page, contextLabel){
-  const result=await page.locator('.rcv-scene .rcv-hero-caption').evaluate(panel=>{
-    const caption=panel.getBoundingClientRect();
-    const items=[...panel.children].map(el=>{
-      const r=el.getBoundingClientRect();
-      return {label:el.className, text:el.textContent.trim(),
-        x:r.x, y:r.y, right:r.right, bottom:r.bottom,
-        width:r.width, height:r.height,
-        scrollWidth:el.scrollWidth, clientWidth:el.clientWidth,
-        scrollHeight:el.scrollHeight, clientHeight:el.clientHeight};
-    });
-    return {display:getComputedStyle(panel).display,
-      caption:{left:caption.left,top:caption.top,right:caption.right,bottom:caption.bottom,height:caption.height,width:caption.width},
-      items};
+async function assertNoHeroCaption(page, contextLabel){
+  assert.equal(await page.locator('.rcv-scene .rcv-hero-caption').count(),0,
+    contextLabel+': unwanted caption overlay exists');
+  const scene=page.locator('.rcv-scene');
+  assert.equal(await scene.locator('.rcv-hero-composite img').count(),1,
+    contextLabel+': hero photo missing');
+  await scene.locator('.rcv-hero-composite img').evaluate(async img=>{
+    await img.decode();
+    if(img.naturalWidth < 1200 || img.naturalHeight < 650){
+      throw new Error('Full-resolution hero image failed to decode');
+    }
   });
-  assert.equal(result.display,'grid',contextLabel+': caption must use stacked grid layout');
-  assert.equal(result.items.length,3,contextLabel+': caption must have exactly 3 distinct text rows');
-  for(let i=0;i<result.items.length;i++){
-    const x=result.items[i];
-    assert.ok(x.text.length>0,contextLabel+': missing caption copy '+i);
-    assert.ok(x.x>=result.caption.left-2 && x.right<=result.caption.right+2,
-      contextLabel+': text outside horizontal caption bounds '+JSON.stringify(x));
-    assert.ok(x.y>=result.caption.top-2 && x.bottom<=result.caption.bottom+2,
-      contextLabel+': text outside vertical caption bounds '+JSON.stringify(x));
-    assert.ok(x.scrollWidth<=x.clientWidth+2 && x.scrollHeight<=x.clientHeight+2,
-      contextLabel+': text overflows its row '+JSON.stringify(x));
-    if(i>0)assert.ok(x.y>=result.items[i-1].bottom+1,contextLabel+': caption rows overlap');
-  }
-  assert.ok(result.caption.height<=Math.max(150,result.caption.width*.65),
-    contextLabel+': caption obscures too much hero photography');
+  const lowerImageVisible=await scene.evaluate(host=>{
+    const image=host.querySelector('.rcv-hero-composite img');
+    const rect=host.getBoundingClientRect();
+    const pointX=rect.left+rect.width*.50;
+    const pointY=rect.top+rect.height*.87;
+    const atPoint=document.elementFromPoint(pointX,pointY);
+    return atPoint===image || image.contains(atPoint);
+  });
+  assert.ok(lowerImageVisible,contextLabel+': lower hero image obscured by an overlay');
 }
 
 async function audit(name,fn){try{await fn();console.log('PASS: '+name);}catch(e){failures.push(name+': '+e.message);console.error('FAIL: '+name+': '+e.stack);}}
@@ -86,7 +77,7 @@ await audit('dark desktop 1440px',async()=>{
       img.addEventListener('error',()=>reject(new Error('Image load failed: '+img.src)),{once:true});
     }));
   }
-  await assertHeroCaptionLayout(page,'dark desktop');
+  await assertNoHeroCaption(page,'dark desktop');
   await page.screenshot({path:'artifacts/visual-qa/home-dark-desktop.png',fullPage:true});
   assert.deepEqual(errors,[]);
   await context.close();
@@ -134,7 +125,7 @@ await audit('soft white desktop theme toggle and persistence',async()=>{
   console.log('LIGHT_HERO_PAINT_CONTRAST='+contrast.toFixed(2));
   assert.ok(contrast>=18,'Soft-white hero screenshot is visually blank although the image decoded; contrast='+contrast.toFixed(2));
   await page.evaluate(()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve))));
-  await assertHeroCaptionLayout(page,'soft-white desktop');
+  await assertNoHeroCaption(page,'soft-white desktop');
   await page.screenshot({path:'artifacts/visual-qa/home-soft-white-desktop.png',fullPage:true});
 
   const lightEvidence=await page.locator('.rcv-future-grid img').evaluateAll(imgs=>imgs.map(i=>({src:i.currentSrc,width:i.naturalWidth})));
@@ -161,7 +152,7 @@ await audit('390px mobile navigation, editorial cards and no overflow',async()=>
   await page.locator('.mobile-toggle').click();
   assert.equal(await page.locator('.mobile-toggle').getAttribute('aria-expanded'),'true');
   await page.locator('.mobile-toggle').click();
-  await assertHeroCaptionLayout(page,'dark mobile');
+  await assertNoHeroCaption(page,'dark mobile');
   await page.screenshot({path:'artifacts/visual-qa/home-dark-mobile.png',fullPage:true});
   await page.locator('button[data-theme-toggle]').click();
   assert.equal(await page.evaluate(()=>document.documentElement.dataset.theme),'light');
@@ -170,7 +161,7 @@ await audit('390px mobile navigation, editorial cards and no overflow',async()=>
     if(img.naturalWidth<1200)throw new Error('Mobile soft-white hero photograph did not decode');
   });
   await page.evaluate(()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve))));
-  await assertHeroCaptionLayout(page,'soft-white mobile');
+  await assertNoHeroCaption(page,'soft-white mobile');
   await page.screenshot({path:'artifacts/visual-qa/home-soft-white-mobile.png',fullPage:true});
   await context.close();
 });
